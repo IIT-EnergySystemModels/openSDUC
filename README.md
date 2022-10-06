@@ -1,2 +1,2 @@
 # openSDUC
-Open Stochastic Daily Unit Commitment of Thermal and ESS Units
+Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC)
