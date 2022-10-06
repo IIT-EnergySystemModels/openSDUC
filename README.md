@@ -1,5 +1,4 @@
 # openSDUC
-Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC)
 
 The *Open Stochastic Daily Unit Commitment of Thermal and Hydro Units* **(openSDUC)** determines the system operation for supplying the demand at minimum cost.
 
