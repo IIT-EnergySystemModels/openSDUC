@@ -65,7 +65,7 @@
 # make it effectively proprietary.  To prevent this, the GPL assures that
 # patents cannot be used to render the program non-free.
 
-# Open Stochastic Daily Unit Commitment of Thermal and Hydro Units (openSDUC) - Version 1.3.28 - April 5, 2022
+# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.28 - April 5, 2022
 # simplicity and transparency in power systems planning
 
 # Developed by
@@ -134,7 +134,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime = time.time()
 
     #%% model declaration
-    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and Hydro Units (openSDUC) - Version 1.3.28 - April 5, 2022')
+    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.28 - April 5, 2022')
 
     #%% reading the sets
     dictSets = DataPortal()
