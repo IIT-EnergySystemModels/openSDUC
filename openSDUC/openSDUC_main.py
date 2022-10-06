@@ -649,6 +649,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime          = time.time()
     print('Writing output results                ... ', round(WritingResultsTime), 's')
     print('Total time                            ... ', round(ReadingDataTime + GeneratingOFTime + GeneratingRBITime + GeneratingGenConsTime + GeneratingRampsTime + GeneratingMinUDTime + SolvingTime + WritingResultsTime), 's')
+    print('\n #### Academic research license - for non-commercial use only #### \n')
 
 if __name__ == '__main__':
     main()

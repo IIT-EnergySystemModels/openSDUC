@@ -1,0 +1,176 @@
+.. openSDUC documentation master file, created by Andres Ramos
+
+Output Results
+==============
+
+Some figures for technology output, RES curtailment and SRMC are plotted.
+
+.. image:: /../imagenes/oUC_SRMC_16g.png
+   :scale: 60%
+   :align: center
+
+.. image:: /../imagenes/oUC_TechnologyOutput_scen1_16g.png
+   :scale: 60%
+   :align: center
+
+Besides, the csv files used for outputting the results are briefly described in the following items.
+
+File ``oUC_Result_GenerationCommitment.csv``
+
+============  ==========  =========  ===========================
+Identifier    Identifier  Header     Description
+============  ==========  =========  ===========================
+Scenario      Load level  Generator  Commitment decision [p.u.]
+============  ==========  =========  ===========================
+
+File ``oUC_Result_GenerationStartUp.csv``
+
+============  ==========  =========  ===========================
+Identifier    Identifier  Header     Description
+============  ==========  =========  ===========================
+Scenario      Load level  Generator  Startup decision [p.u.]
+============  ==========  =========  ===========================
+
+File ``oUC_Result_GenerationShutDown.csv``
+
+============  ==========  =========  ===========================
+Identifier    Identifier  Header     Description
+============  ==========  =========  ===========================
+Scenario      Load level  Generator  Shutdown decision [p.u.]
+============  ==========  =========  ===========================
+
+File ``oUC_Result_GenerationReserveUp.csv``
+
+============  ==========  =========  ==============================
+Identifier    Identifier  Header     Description
+============  ==========  =========  ==============================
+Scenario      Load level  Generator  Upward operating reserve [MW]
+============  ==========  =========  ==============================
+
+File ``oUC_Result_GenerationReserveDown.csv``
+
+============  ==========  =========  ===============================
+Identifier    Identifier  Header     Description
+============  ==========  =========  ===============================
+Scenario      Load level  Generator  Downward operating reserve [MW]
+============  ==========  =========  ===============================
+
+File ``oUC_Result_GenerationOutput.csv``
+
+============  ==========  =========  ==============================
+Identifier    Identifier  Header     Description
+============  ==========  =========  ==============================
+Scenario      Load level  Generator  Output (discharge in ESS) [MW]
+============  ==========  =========  ==============================
+
+File ``oUC_Result_RESCurtailment.csv``
+
+============  ==========  =============  ===========================
+Identifier    Identifier  Header         Description
+============  ==========  =============  ===========================
+Scenario      Load level  RES Generator  Curtailed power of RES [MW]
+============  ==========  =============  ===========================
+
+File ``oUC_Result_GenerationEnergy.csv``
+
+============  ==========  =========  ===============================
+Identifier    Identifier  Header     Description
+============  ==========  =========  ===============================
+Scenario      Load level  Generator  Energy (discharge in ESS) [GWh]
+============  ==========  =========  ===============================
+
+File ``oUC_Result_GenerationEmission.csv``
+
+============  ==========  =========  ===============================
+Identifier    Identifier  Header     Description
+============  ==========  =========  ===============================
+Scenario      Load level  Generator  CO2 emission [t CO2]
+============  ==========  =========  ===============================
+
+File ``oUC_Result_TechnologyOutput.csv``
+
+============  ==========  ==========  ==============================
+Identifier    Identifier  Header      Description
+============  ==========  ==========  ==============================
+Scenario      Load level  Technology  Output (discharge in ESS) [MW]
+============  ==========  ==========  ==============================
+
+File ``oUC_Result_TechnologyCharge.csv``
+
+============  ==========  ==========  ================================
+Identifier    Identifier  Header      Description
+============  ==========  ==========  ================================
+Scenario      Load level  Technology  Consumption (charge in ESS) [MW]
+============  ==========  ==========  ================================
+
+File ``oUC_Result_TechnologyEnergy.csv``
+
+============  ==========  ==========  ===============================
+Identifier    Identifier  Header      Description
+============  ==========  ==========  ===============================
+Scenario      Load level  Technology  Energy (discharge in ESS) [GWh]
+============  ==========  ==========  ===============================
+
+File ``oUC_Result_ESSChargeOutput.csv``
+
+============  ==========  =========  ===========================
+Identifier    Identifier  Header     Description
+============  ==========  =========  ===========================
+Scenario      Load level  Generator  Charged power in ESS [MW]
+============  ==========  =========  ===========================
+
+File ``oUC_Result_ESSChargeEnergy.csv``
+
+============  ==========  =========  ===========================
+Identifier    Identifier  Header     Description
+============  ==========  =========  ===========================
+Scenario      Load level  Generator  Charged energy in ESS [GWh]
+============  ==========  =========  ===========================
+
+File ``oUC_Result_ESSTechnologyEnergy.csv``
+
+============  ==========  ==========  ============================
+Identifier    Identifier  Header      Description
+============  ==========  ==========  ============================
+Scenario      Load level  Technology  Energy (charge in ESS) [GWh]
+============  ==========  ==========  ============================
+
+File ``oUC_Result_ESSInventory.csv``
+
+============  ==========  =========  ==============================================================================================
+Identifier    Identifier  Header     Description
+============  ==========  =========  ==============================================================================================
+Scenario      Load level  Generator  Stored energy (SoC in batteries, reservoir energy in pumped-storage hydro power plants) [GWh]
+============  ==========  =========  ==============================================================================================
+
+File ``oUC_Result_ESSSpillage.csv``
+
+============  ==========  =========  =============================
+Identifier    Identifier  Header     Description
+============  ==========  =========  =============================
+Scenario      Load level  Generator  Spilled energy in ESS [GWh]
+============  ==========  =========  =============================
+
+File ``oUC_Result_PNS.csv``
+
+============  ==========  =======================
+Identifier    Identifier  Description
+============  ==========  =======================
+Scenario      Load level  Power not served [MW]
+============  ==========  =======================
+
+File ``oUC_Result_ENS.csv``
+
+============  ==========  =======================
+Identifier    Identifier  Description
+============  ==========  =======================
+Scenario      Load level  Energy not served [GWh]
+============  ==========  =======================
+
+File ``oUC_Result_SRMC.csv``
+
+============  ==========  ====================================
+Identifier    Identifier  Description
+============  ==========  ====================================
+Scenario      Load level  Short-Mun Marginal Cost [€/MWh]
+============  ==========  ====================================
