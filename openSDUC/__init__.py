@@ -14,3 +14,5 @@ Open Stochastic Daily Unit Commitment of Thermal and Hydro Units (openSDUC) - Ve
         >>> oT.routine("16g", "C:\\Users\\UserName\\Documents\\GitHub\\openSDUC", "glpk")
 """
 __version__ = "1.3.28"
+
+from .openSDUC_main             import main
