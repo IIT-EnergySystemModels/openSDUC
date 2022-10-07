@@ -1,3 +1,8 @@
+
+.. image:: https://badge.fury.io/py/openSDUC.svg
+    :target: https://badge.fury.io/py/openSDUC
+    :alt: PyPI
+
 # openSDUC
 
 The *Open Stochastic Daily Unit Commitment of Thermal and ESS Units* **(openSDUC)** determines the system operation for supplying the demand at minimum cost.
