@@ -25,9 +25,9 @@
    :alt: GPL
 
    
-# openSDUC
+**Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC)**
 
-The *Open Stochastic Daily Unit Commitment of Thermal and ESS Units* **(openSDUC)** determines the system operation for supplying the demand at minimum cost.
+It determines the system operation for supplying the demand at minimum cost.
 
 The **openSDUC** model presents a decision support system for defining the generation operation of a large-scale electric system.
 
