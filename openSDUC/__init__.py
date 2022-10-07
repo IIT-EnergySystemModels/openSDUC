@@ -1,5 +1,5 @@
 """
-Open Stochastic Daily Unit Commitment of Thermal and Hydro Units (openSDUC) - Version 1.3.28 - April 5, 2022
+Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.28 - April 5, 2022
 
     Args:
         case:   Name of the folder where the CSV files of the case are found
