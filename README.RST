@@ -16,6 +16,9 @@
    :target: https://github.com/IIT-EnergySystemModels/openSDUC/blob/master/LICENSE
    :alt: GPL
    
+.. image:: https://pepy.tech/badge/openSDUC
+   :target: https://pepy.tech/project/openSDUC
+   :alt: pepy
    
 # openSDUC
 
