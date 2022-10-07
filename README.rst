@@ -5,9 +5,8 @@
    :alt: logo
    :align: center
    
-|
-   
-.. image:: https://badge.fury.io/py/openSDUC.svg
+|   
+.. image:: https://img.shields.io/pypi/v/openSDUC
     :target: https://badge.fury.io/py/openSDUC
     :alt: PyPI
 
