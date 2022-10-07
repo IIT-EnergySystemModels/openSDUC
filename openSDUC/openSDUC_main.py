@@ -492,10 +492,10 @@ def openSDUC_run(DirName, CaseName, SolverName):
     print('Generating minimum up/down time       ... ', round(GeneratingMinUDTime), 's')
 
     #%% solving the problem
-    mSDUC.write('openSDUC_'+CaseName+'.lp', io_options={'symbolic_solver_labels': True}) # create lp-format file
+    mSDUC.write(_path+'openSDUC_'+CaseName+'.lp', io_options={'symbolic_solver_labels': True}) # create lp-format file
     Solver = SolverFactory(SolverName)                                                   # select solver
     if SolverName == 'gurobi':
-        Solver.options['LogFile'       ] = 'openSDUC_'+CaseName+'.log'
+        Solver.options['LogFile'       ] = _path+'openSDUC_'+CaseName+'.log'
         #Solver.options['IISFile'      ] = 'openSDUC_'+CaseName+'.ilp'                   # should be uncommented to show results of IIS
         #Solver.options['Method'       ] = 2                                             # barrier method
         Solver.options['MIPGap'        ] = 0.02
