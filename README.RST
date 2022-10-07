@@ -11,6 +11,11 @@
    :target: https://opensduc.readthedocs.io/en/latest/index.html
    :alt: docs
    
+  
+.. image:: https://img.shields.io/badge/License-GPL%20v3-blue.svg
+   :target: https://github.com/IIT-EnergySystemModels/openSDUC/blob/master/LICENSE
+   :alt: GPL
+   
    
 # openSDUC
 
