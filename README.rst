@@ -1,3 +1,22 @@
+
+.. image:: https://badge.fury.io/py/openSDUC.svg
+    :target: https://badge.fury.io/py/openSDUC
+    :alt: PyPI
+
+.. image:: https://img.shields.io/pypi/pyversions/openSDUC.svg
+   :target: https://pypi.python.org/pypi/openSDUC
+   :alt: versions
+   
+.. image:: https://img.shields.io/readthedocs/opensduc
+   :target: https://opensduc.readthedocs.io/en/latest/index.html
+   :alt: docs
+   
+  
+.. image:: https://img.shields.io/badge/License-GPL%20v3-blue.svg
+   :target: https://github.com/IIT-EnergySystemModels/openSDUC/blob/master/LICENSE
+   :alt: GPL
+
+   
 # openSDUC
 
 The *Open Stochastic Daily Unit Commitment of Thermal and ESS Units* **(openSDUC)** determines the system operation for supplying the demand at minimum cost.
