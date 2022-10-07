@@ -5,11 +5,11 @@ Output Results
 
 Some figures for technology output, RES curtailment and SRMC are plotted.
 
-.. image:: /../imagenes/oUC_SRMC_16g.png
+.. image:: /../img/oUC_SRMC_16g.png
    :scale: 60%
    :align: center
 
-.. image:: /../imagenes/oUC_TechnologyOutput_scen1_16g.png
+.. image:: /../img/oUC_TechnologyOutput_scen1_16g.png
    :scale: 60%
    :align: center
 
