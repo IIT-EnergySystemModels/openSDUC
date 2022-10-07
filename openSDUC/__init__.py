@@ -11,6 +11,6 @@ Open Stochastic Daily Unit Commitment of Thermal and Hydro Units (openSDUC) - Ve
 
     Examples:
         >>> import openSDUC as oT
-        >>> oT.routine("9n", "C:\\Users\\UserName\\Documents\\GitHub\\openTEPES", "glpk")
+        >>> oT.routine("16g", "C:\\Users\\UserName\\Documents\\GitHub\\openSDUC", "glpk")
 """
 __version__ = "1.3.28"
