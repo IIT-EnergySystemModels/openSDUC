@@ -19,7 +19,7 @@ Besides, it also requires the following packages:
 
 Cases
 -----
-Here, you have the input files of a small case study of `16 generators <../16g.zip>`_.
+Here, you have the input files of a small case study of 16 generators.
 
 Code
 ----
