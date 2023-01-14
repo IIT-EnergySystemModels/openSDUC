@@ -8,7 +8,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'openSDUC'
-copyright = '2022, Universidad Pontificia Comillas'
+copyright = '2023, Universidad Pontificia Comillas'
 author = 'Andres Ramos'
 
 # The short X.Y version
