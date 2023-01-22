@@ -65,7 +65,7 @@
 # make it effectively proprietary.  To prevent this, the GPL assures that
 # patents cannot be used to render the program non-free.
 
-# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.28 - April 5, 2022
+# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.29 - January 22, 2023
 # simplicity and transparency in power systems planning
 
 # Developed by
@@ -134,7 +134,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime = time.time()
 
     #%% model declaration
-    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.28 - April 5, 2022')
+    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.29 - January 22, 2023')
 
     #%% reading the sets
     dictSets = DataPortal()
@@ -153,16 +153,17 @@ def openSDUC_run(DirName, CaseName, SolverName):
     mSDUC.st = Set(initialize=dictSets['st'], ordered=False, doc='ESS types'   )
 
     #%% reading data from CSV files
-    dfParameter          = pd.read_csv(_path+'/oUC_Data_Parameter_'         +CaseName+'.csv', index_col=[0  ])
-    dfDuration           = pd.read_csv(_path+'/oUC_Data_Duration_'          +CaseName+'.csv', index_col=[0  ])
-    dfScenario           = pd.read_csv(_path+'/oUC_Data_Scenario_'          +CaseName+'.csv', index_col=[0  ])
-    dfDemand             = pd.read_csv(_path+'/oUC_Data_Demand_'            +CaseName+'.csv', index_col=[0,1])
-    dfOperatingReserve   = pd.read_csv(_path+'/oUC_Data_OperatingReserve_'  +CaseName+'.csv', index_col=[0,1])
-    dfGeneration         = pd.read_csv(_path+'/oUC_Data_Generation_'        +CaseName+'.csv', index_col=[0  ])
-    dfVariableMaxPower   = pd.read_csv(_path+'/oUC_Data_VariableGeneration_'+CaseName+'.csv', index_col=[0,1])
-    dfVariableMinStorage = pd.read_csv(_path+'/oUC_Data_MinimumStorage_'    +CaseName+'.csv', index_col=[0,1])
-    dfVariableMaxStorage = pd.read_csv(_path+'/oUC_Data_MaximumStorage_'    +CaseName+'.csv', index_col=[0,1])
-    dfEnergyInflows      = pd.read_csv(_path+'/oUC_Data_EnergyInflows_'     +CaseName+'.csv', index_col=[0,1])
+    dfParameter          = pd.read_csv(_path+'/oUC_Data_Parameter_'        +CaseName+'.csv', index_col=[0  ])
+    dfDuration           = pd.read_csv(_path+'/oUC_Data_Duration_'         +CaseName+'.csv', index_col=[0  ])
+    dfScenario           = pd.read_csv(_path+'/oUC_Data_Scenario_'         +CaseName+'.csv', index_col=[0  ])
+    dfDemand             = pd.read_csv(_path+'/oUC_Data_Demand_'           +CaseName+'.csv', index_col=[0,1])
+    dfOperatingReserve   = pd.read_csv(_path+'/oUC_Data_OperatingReserve_' +CaseName+'.csv', index_col=[0,1])
+    dfGeneration         = pd.read_csv(_path+'/oUC_Data_Generation_'       +CaseName+'.csv', index_col=[0  ])
+    dfVariableMinPower   = pd.read_csv(_path+'/oUC_Data_MinimumGeneration_'+CaseName+'.csv', index_col=[0,1])
+    dfVariableMaxPower   = pd.read_csv(_path+'/oUC_Data_MaximumGeneration_'+CaseName+'.csv', index_col=[0,1])
+    dfVariableMinStorage = pd.read_csv(_path+'/oUC_Data_MinimumStorage_'   +CaseName+'.csv', index_col=[0,1])
+    dfVariableMaxStorage = pd.read_csv(_path+'/oUC_Data_MaximumStorage_'   +CaseName+'.csv', index_col=[0,1])
+    dfEnergyInflows      = pd.read_csv(_path+'/oUC_Data_EnergyInflows_'    +CaseName+'.csv', index_col=[0,1])
 
     # substitute NaN by 0
     dfParameter.fillna         (0.0, inplace=True)
@@ -171,6 +172,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     dfDemand.fillna            (0.0, inplace=True)
     dfOperatingReserve.fillna  (0.0, inplace=True)
     dfGeneration.fillna        (0.0, inplace=True)
+    dfVariableMinPower.fillna  (0.0, inplace=True)
     dfVariableMaxPower.fillna  (0.0, inplace=True)
     dfVariableMinStorage.fillna(0.0, inplace=True)
     dfVariableMaxStorage.fillna(0.0, inplace=True)
@@ -186,6 +188,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     pDemand             = dfDemand            ['Demand'      ] * 1e-3                                                              # demand                           [GW]
     pOperReserveUp      = dfOperatingReserve  ['Up'          ] * 1e-3                                                              # operating reserve up             [GW]
     pOperReserveDw      = dfOperatingReserve  ['Down'        ] * 1e-3                                                              # operating reserve down           [GW]
+    pVariableMinPower   = dfVariableMinPower  [list(mSDUC.gg)] * 1e-3                                                              # dynamic variable minimum power   [GW]
     pVariableMaxPower   = dfVariableMaxPower  [list(mSDUC.gg)] * 1e-3                                                              # dynamic variable maximum power   [GW]
     pVariableMinStorage = dfVariableMinStorage[list(mSDUC.gg)]                                                                     # dynamic variable minimum storage [GWh]
     pVariableMaxStorage = dfVariableMaxStorage[list(mSDUC.gg)]                                                                     # dynamic variable maximum storage [GWh]
@@ -195,6 +198,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     pDemand             = pDemand.rolling            (pTimeStep).mean()
     pOperReserveUp      = pOperReserveUp.rolling     (pTimeStep).mean()
     pOperReserveDw      = pOperReserveDw.rolling     (pTimeStep).mean()
+    pVariableMinPower   = pVariableMinPower.rolling  (pTimeStep).mean()
     pVariableMaxPower   = pVariableMaxPower.rolling  (pTimeStep).mean()
     pVariableMinStorage = pVariableMinStorage.rolling(pTimeStep).mean()
     pVariableMaxStorage = pVariableMaxStorage.rolling(pTimeStep).mean()
@@ -203,6 +207,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     pDemand.fillna            (0.0, inplace=True)
     pOperReserveUp.fillna     (0.0, inplace=True)
     pOperReserveDw.fillna     (0.0, inplace=True)
+    pVariableMinPower.fillna  (0.0, inplace=True)
     pVariableMaxPower.fillna  (0.0, inplace=True)
     pVariableMinStorage.fillna(0.0, inplace=True)
     pVariableMaxStorage.fillna(0.0, inplace=True)
@@ -255,17 +260,22 @@ def openSDUC_run(DirName, CaseName, SolverName):
         pDemand             = pDemand.loc            [mSDUC.sc*mSDUC.n]
         pOperReserveUp      = pOperReserveUp.loc     [mSDUC.sc*mSDUC.n]
         pOperReserveDw      = pOperReserveDw.loc     [mSDUC.sc*mSDUC.n]
+        pVariableMinPower   = pVariableMinPower.loc  [mSDUC.sc*mSDUC.n]
         pVariableMaxPower   = pVariableMaxPower.loc  [mSDUC.sc*mSDUC.n]
         pVariableMinStorage = pVariableMinStorage.loc[mSDUC.sc*mSDUC.n]
         pVariableMaxStorage = pVariableMaxStorage.loc[mSDUC.sc*mSDUC.n]
         pEnergyInflows      = pEnergyInflows.loc     [mSDUC.sc*mSDUC.n]
 
     # variable minimum and maximum power
+    pVariableMinPower = pVariableMinPower.replace(0.0, float('nan'))
     pVariableMaxPower = pVariableMaxPower.replace(0.0, float('nan'))
     pMinPower         = pd.DataFrame([pRatedMinPower]*len(pVariableMaxPower.index), index=pd.MultiIndex.from_tuples(pVariableMaxPower.index), columns=pRatedMinPower.index)
     pMaxPower         = pd.DataFrame([pRatedMaxPower]*len(pVariableMaxPower.index), index=pd.MultiIndex.from_tuples(pVariableMaxPower.index), columns=pRatedMaxPower.index)
+    pMinPower         = pMinPower.reindex        (sorted(pMinPower.columns        ), axis=1)
     pMaxPower         = pMaxPower.reindex        (sorted(pMaxPower.columns        ), axis=1)
+    pVariableMinPower = pVariableMinPower.reindex(sorted(pVariableMinPower.columns), axis=1)
     pVariableMaxPower = pVariableMaxPower.reindex(sorted(pVariableMaxPower.columns), axis=1)
+    pMinPower         = pVariableMinPower.where(pVariableMinPower > pMinPower, other=pMaxPower)
     pMaxPower         = pVariableMaxPower.where(pVariableMaxPower < pMaxPower, other=pMaxPower)
     pMaxPower2ndBlock = pMaxPower - pMinPower
 
@@ -435,7 +445,6 @@ def openSDUC_run(DirName, CaseName, SolverName):
             return mSDUC.vTotalOutput[sc,n,nr]                       ==                           mSDUC.vOutput2ndBlock[sc,n,nr]
         else:
             return mSDUC.vTotalOutput[sc,n,nr] / pMinPower[nr][sc,n] == mSDUC.vCommitment[n,nr] + mSDUC.vOutput2ndBlock[sc,n,nr] / pMinPower[nr][sc,n]
-
     mSDUC.eTotalOutput = Constraint(mSDUC.sc, mSDUC.n, mSDUC.nr, rule=eTotalOutput, doc='total output of a unit [GW]')
 
     def eUCStrShut(mSDUC,n,nr):
@@ -492,10 +501,10 @@ def openSDUC_run(DirName, CaseName, SolverName):
     print('Generating minimum up/down time       ... ', round(GeneratingMinUDTime), 's')
 
     #%% solving the problem
-    mSDUC.write(_path+'openSDUC_'+CaseName+'.lp', io_options={'symbolic_solver_labels': True}) # create lp-format file
+    mSDUC.write(_path+'/openSDUC_'+CaseName+'.lp', io_options={'symbolic_solver_labels': True}) # create lp-format file
     Solver = SolverFactory(SolverName)                                                   # select solver
     if SolverName == 'gurobi':
-        Solver.options['LogFile'       ] = _path+'openSDUC_'+CaseName+'.log'
+        Solver.options['LogFile'       ] = _path+'/openSDUC_'+CaseName+'.log'
         #Solver.options['IISFile'      ] = 'openSDUC_'+CaseName+'.ilp'                   # should be uncommented to show results of IIS
         #Solver.options['Method'       ] = 2                                             # barrier method
         Solver.options['MIPGap'        ] = 0.02
@@ -506,10 +515,10 @@ def openSDUC_run(DirName, CaseName, SolverName):
     SolverResults.write()                                                                # summary of the solver results
 
     #%% fix values of binary variables to get dual variables and solve it again
-    for n,t in mSDUC.n*mSDUC.t:
-        mSDUC.vCommitment[n,t].fix(mSDUC.vCommitment[n,t]())
-        mSDUC.vStartUp   [n,t].fix(mSDUC.vStartUp   [n,t]())
-        mSDUC.vShutDown  [n,t].fix(mSDUC.vShutDown  [n,t]())
+    for n,nr in mSDUC.n*mSDUC.nr:
+        mSDUC.vCommitment[n,nr].fix(round(mSDUC.vCommitment[n,nr]()))
+        mSDUC.vStartUp   [n,nr].fix(round(mSDUC.vStartUp   [n,nr]()))
+        mSDUC.vShutDown  [n,nr].fix(round(mSDUC.vShutDown  [n,nr]()))
 
     if SolverName == 'gurobi':
         Solver.options['relax_integrality'] = 1                                          # introduced to show results of the dual variables
@@ -524,8 +533,11 @@ def openSDUC_run(DirName, CaseName, SolverName):
     print('Objective function value                  ', mSDUC.eTotalTCost.expr())
 
     #%% inverse index generator to technology and to company
-    pTechnologyToGen = pGenToTechnology.reset_index().set_index('Technology').set_axis(['Generator'], axis=1, inplace=False)['Generator']
-    pCompanyToGen    = pGenToCompany.reset_index().set_index   ('Company'   ).set_axis(['Generator'], axis=1, inplace=False)['Generator']
+    pTechnologyToGen = pGenToTechnology.reset_index().set_index('Technology').set_axis(['Generator'], axis=1, copy=False)[['Generator']]
+    pTechnologyToGen = pTechnologyToGen.loc[pTechnologyToGen['Generator'].isin(mSDUC.g)]
+    pTechnology2Gen  = pTechnologyToGen.reset_index().set_index(['Technology', 'Generator'])
+
+    mSDUC.t2g = Set(initialize=pTechnology2Gen.index, ordered=False, doc='technology to generator')
 
     #%% outputting the generation operation
 
@@ -553,7 +565,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     OutputResults = pd.Series(data=[mSDUC.vENS[sc,n]()*pDuration[n] for sc,n in mSDUC.sc*mSDUC.n], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n)))
     OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], values='GWh').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ENS_'+CaseName+'.csv', sep=',')
 
-    OutputResults = pd.Series(data=[(pMaxPower[g][sc,n]-mSDUC.vTotalOutput[sc,n,g]())*1e3 for sc,n,g in mSDUC.sc*mSDUC.n*mSDUC.r], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.r)))
+    OutputResults = pd.Series(data=[(mSDUC.vTotalOutput[sc,n,g].ub-mSDUC.vTotalOutput[sc,n,g]())*1e3 for sc,n,g in mSDUC.sc*mSDUC.n*mSDUC.r], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.r)))
     OutputResults.to_frame(name='MW').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_RESCurtailment_'+CaseName+'.csv', sep=',')
 
     #%% plot SRMC for all the scenarios
@@ -571,46 +583,43 @@ def openSDUC_run(DirName, CaseName, SolverName):
     #plt.show()
     plt.savefig(_path+'/oUC_Plot_RESCurtailment_'+CaseName+'.png', bbox_inches=None)
 
-    OutputResults = pd.Series(data=[mSDUC.vTotalOutput[sc,n,g]()*pDuration[n]              for sc,n,g in mSDUC.sc*mSDUC.n*mSDUC.g], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.g)))
+    OutputResults = pd.Series(data=[mSDUC.vTotalOutput[sc,n,g]()*pDuration[n]                                      for sc,n,g in mSDUC.sc*mSDUC.n*mSDUC.g], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.g)))
     OutputResults.to_frame(name='GWh' ).reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='GWh' ).rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_GenerationEnergy_'+CaseName+'.csv', sep=',')
 
-    OutputResults = pd.Series(data=[mSDUC.vTotalOutput[sc,n,nr]()*pCO2EmissionRate[nr]*1e3 for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.t], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.t)))
+    OutputResults = pd.Series(data=[mSDUC.vTotalOutput[sc,n,nr]()*pCO2EmissionRate[nr]*1e3                         for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.t], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.t)))
     OutputResults.to_frame(name='tCO2').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='tCO2').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_GenerationEmission_'+CaseName+'.csv', sep=',')
 
     #%% outputting the ESS operation
     if len(mSDUC.es):
-        OutputResults = pd.Series(data=[mSDUC.vESSCharge   [sc,n,es]()*1e3           for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.es)))
+        OutputResults = pd.Series(data=[mSDUC.vESSCharge[sc,n,es]()*1e3                                        for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.es)))
         OutputResults.to_frame(name='MW' ).reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW' ).rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ESSChargeOutput_'+CaseName+'.csv', sep=',')
 
-        OutputResults = pd.Series(data=[mSDUC.vESSCharge[sc,n,es]()*pDuration[n]     for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.es)))
-        OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='GWh').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ESSChargeEnergy_'+CaseName+'.csv', sep=',')
-
-        OutputResults = pd.Series(data=[OutputResults[sc,n].filter(pTechnologyToGen[gt]).sum() for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.gt)))
-        OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='GWh').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ESSTechnologyEnergy_'+CaseName+'.csv', sep=',')
-
-        OutputResults = pd.Series(data=[mSDUC.vESSInventory[sc,n,es]()               for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.es)))
-        OutputResults *= 1e3
-        OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='GWh', dropna=False).rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ESSInventory_'+CaseName+'.csv', sep=',')
-
-        OutputResults = pd.Series(data=[mSDUC.vESSSpillage [sc,n,es]()               for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.es)))
-        OutputResults *= 1e3
-        OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='GWh', dropna=False).rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ESSSpillage_'+CaseName+'.csv', sep=',')
-
-        OutputResults = pd.Series({Key:OptimalSolution.value*1e3 for Key,OptimalSolution in mSDUC.vESSCharge.items()})
-        OutputResults = pd.Series(data=[OutputResults[sc,n].filter(pTechnologyToGen[gt]).sum() for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.gt)))
+        OutputResults = pd.Series(data=[sum(OutputResults[sc,n,es] for es in mSDUC.es if (gt,es) in mSDUC.t2g) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for es in mSDUC.es if (gt,es) in mSDUC.t2g)], index=pd.MultiIndex.from_tuples([(sc,n,gt) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for es in mSDUC.es if (gt,es) in mSDUC.t2g)]))
         OutputResults.to_frame(name='MW' ).reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW' ).rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_TechnologyCharge_'+CaseName+'.csv', sep=',')
 
         TechnologyCharge = OutputResults.loc[:,:,:]
 
-    OutputResults = pd.Series({Key:OptimalSolution.value*1e3 for Key,OptimalSolution in mSDUC.vTotalOutput.items()})
-    OutputResults = pd.Series(data=[OutputResults[sc,n].filter(pTechnologyToGen[gt]).sum() for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.gt)))
+        OutputResults = pd.Series(data=[mSDUC.vESSCharge[sc,n,es]()*pDuration[n]                               for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.es)))
+        OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='GWh').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ESSChargeEnergy_'+CaseName+'.csv', sep=',')
+
+        OutputResults = pd.Series(data=[sum(OutputResults[sc,n,es] for es in mSDUC.es if (gt,es) in mSDUC.t2g) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for es in mSDUC.es if (gt,es) in mSDUC.t2g)], index=pd.MultiIndex.from_tuples([(sc,n,gt) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for es in mSDUC.es if (gt,es) in mSDUC.t2g)]))
+        OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='GWh').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ESSTechnologyEnergy_'+CaseName+'.csv', sep=',')
+
+        OutputResults = pd.Series(data=[mSDUC.vESSInventory[sc,n,es]()                                         for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.es)))
+        OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='GWh', dropna=False).rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ESSInventory_'+CaseName+'.csv', sep=',')
+
+        OutputResults = pd.Series(data=[mSDUC.vESSSpillage [sc,n,es]()                                         for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.es)))
+        OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='GWh', dropna=False).rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ESSSpillage_'+CaseName+'.csv', sep=',')
+
+    OutputResults = pd.Series(data=[mSDUC.vTotalOutput[sc,n,g]()*1e3                                           for sc,n,g  in mSDUC.sc*mSDUC.n*mSDUC.g ], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.g )))
+    OutputResults = pd.Series(data=[sum(OutputResults[sc,n,g] for g  in mSDUC.g  if (gt,g ) in mSDUC.t2g)      for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for g in mSDUC.g if (gt,g) in mSDUC.t2g)], index=pd.MultiIndex.from_tuples([(sc,n,gt) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for g in mSDUC.g if (gt,g) in mSDUC.t2g)]))
     OutputResults.to_frame(name='MW').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_TechnologyOutput_'+CaseName+'.csv', sep=',')
 
     TechnologyOutput = OutputResults.loc[:,:,:]
 
     for sc in mSDUC.sc:
         fig, fg = plt.subplots()
-        fg.stackplot(range(len(mSDUC.n)),  TechnologyOutput.loc[sc,:,:].values.reshape(len(mSDUC.n),len(mSDUC.gt)).transpose().tolist(), labels=list(mSDUC.gt))
+        fg.stackplot(range(len(mSDUC.n)),  TechnologyOutput.loc[sc,:,:].values.reshape(len(mSDUC.n),len(mSDUC.gt)).transpose().tolist(), baseline='zero', labels=list(mSDUC.gt))
         fg.plot     (range(len(mSDUC.n)), -TechnologyCharge.loc[sc,:,'ESS'], label='ESSCharge', linewidth=0.5, color='b')
         fg.plot     (range(len(mSDUC.n)),  pDemand[sc]*1e3,                  label='Demand'   , linewidth=0.5, color='k')
         fg.set(xlabel='Hours', ylabel='MW')
@@ -621,8 +630,8 @@ def openSDUC_run(DirName, CaseName, SolverName):
         #plt.show()
         plt.savefig(_path+'/oUC_Plot_TechnologyOutput_'+sc+'_'+CaseName+'.png', bbox_inches=None)
 
-    OutputResults = pd.Series(data=[mSDUC.vTotalOutput[sc,n,g]()*pDuration[n] for sc,n,g in mSDUC.sc*mSDUC.n*mSDUC.g], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.g)))
-    OutputResults = pd.Series(data=[OutputResults[sc,n].filter(pTechnologyToGen[gt]).sum() for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.gt)))
+    OutputResults = pd.Series(data=[mSDUC.vTotalOutput[sc,n,g]()*pDuration[n]                          for sc,n,g in mSDUC.sc*mSDUC.n*mSDUC.g], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.g)))
+    OutputResults = pd.Series(data=[sum(OutputResults[sc,n,g] for g in mSDUC.g if (gt,g) in mSDUC.t2g) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for g in mSDUC.g if (gt,g) in mSDUC.t2g)], index=pd.MultiIndex.from_tuples([(sc,n,gt) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for g in mSDUC.g if (gt,g) in mSDUC.t2g)]))
     OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='GWh').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_TechnologyEnergy_'+CaseName+'.csv', sep=',')
 
     #%% outputting the SRMC

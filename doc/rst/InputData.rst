@@ -34,7 +34,8 @@ File                                    Description
 ``oT_Data_OperatingReserve.csv``        Upward and downward operating reserves (include aFRR, mFRR and RR for electricity balancing from ENTSO-E)
 ``oT_Data_Generation.csv``              Generation data
 ``oT_Data_EnergyInflows.csv``           Energy inflows for ESS (e.g., storage hydro or open-loop pumped-storage hydro) by load level
-``oT_Data_VariableGeneration.csv``      Variable power generation by load level
+``oT_Data_MinimumGeneration.csv``       Variable minimum power generation by load level
+``oT_Data_MaximumGeneration.csv``       Variable minimum power generation by load level
 ``oT_Data_MaximumStorage.csv``          Variable maximum storage by load level
 ``oT_Data_MinimumStorage.csv``          Variable minimum storage by load level
 ======================================  ==========================================================================================================
@@ -152,16 +153,16 @@ Scenario        Load level  Generator  Energy inflows by load level   MW
 
 Internally, all the values below 1e-5 times the maximum system demand will be converted into 0 by the model.
 
-Variable generation
------------------------
+Variable maximum and minimum generation
+---------------------------------------
 
-A description of the data included in the file ``oT_Data_VariableGeneration.csv`` follows:
+A description of the data included in the file ``oT_Data_MaximumGeneration.csv`` and ``oT_Data_MinimumGeneration.csv`` follows:
 
-==============  ==========  =========  ===================================================  ==
+==============  ==========  =========  =============================================================  ==
 Identifier      Identifier  Header     Description
-==============  ==========  =========  ===================================================  ==
-Scenario        Load level  Generator  Maximum power generation of the unit by load level   MW
-==============  ==========  =========  ===================================================  ==
+==============  ==========  =========  =============================================================  ==
+Scenario        Load level  Generator  Maximum (minimum) power generation of the unit by load level   MW
+==============  ==========  =========  =============================================================  ==
 
 To force a generator to produce 0 a lower value (e.g., 0.1 MW) strictly > 0, but not 0 (in which case the value will be ignored), must be introduced. Internally, all the values below 1e-5 times the maximum system demand will be converted into 0 by the model.
 Columns of this file (names of the generators) must be in the same order that in the generation dictionary.
