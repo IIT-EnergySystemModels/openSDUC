@@ -26,7 +26,7 @@ Code
 
 The **openSDUC** code is provided under the `GNU General Public License <https://www.gnu.org/licenses/gpl-3.0.html>`_:
 
-- the code can't become part of a closed-source commercial software product nor can be used for commercial purposes (only for research purposes)
+- the code can't become part of a closed-source commercial software product
 - any future changes and improvements to the code remain free and open
 
 Source code can be downloaded from `GitHub <https://github.com/IIT-EnergySystemModels/openSDUC>`_.
