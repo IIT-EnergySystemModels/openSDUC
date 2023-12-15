@@ -10,7 +10,9 @@ and `CBC 2.10.11 <https://github.com/coin-or/Cbc>`_. List the serial solver inte
 
 Gurobi solver is installed as a package::
 
-  conda install -c gurobi gurobi
+  conda install -c gurobi      gurobi
+  pip   install                highspy
+  conda install -c conda-forge pyscipopt
 
 Besides, it also requires the following packages:
 
@@ -24,7 +26,7 @@ Here, you have the input files of a small case study of 16 generators.
 Code
 ----
 
-The **openSDUC** code is provided under the `GNU General Public License <https://www.gnu.org/licenses/gpl-3.0.html>`_:
+The **openSDUC** code is provided under the `GNU Affero General Public License <https://www.gnu.org/licenses/agpl-3.0.en.html>`_:
 
 - the code can't become part of a closed-source commercial software product
 - any future changes and improvements to the code remain free and open
