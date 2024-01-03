@@ -19,9 +19,9 @@
    :alt: docs
    
   
-.. image:: https://img.shields.io/badge/License-GPL%20v3-blue.svg
+.. image:: https://img.shields.io/badge/License-AGPL%20v3-blue.svg
    :target: https://github.com/IIT-EnergySystemModels/openSDUC/blob/master/LICENSE
-   :alt: GPL
+   :alt: AGPL
 
    
 **Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC)**
