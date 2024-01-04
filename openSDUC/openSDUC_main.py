@@ -1115,8 +1115,6 @@ def openSDUC_run(DirName, CaseName, SolverName):
         mSDUC.vStartUp   [n,nr].fix(round(mSDUC.vStartUp   [n,nr]()))
         mSDUC.vShutDown  [n,nr].fix(round(mSDUC.vShutDown  [n,nr]()))
 
-    if SolverName == 'gurobi':
-        Solver.options['relax_integrality'] = 1                                          # introduced to show results of the dual variables
     mSDUC.dual    = Suffix(direction=Suffix.IMPORT)
     SolverResults = Solver.solve(mSDUC, tee=True)                                        # tee=True displays the output of the solver
     SolverResults.write()                                                                # summary of the solver results
