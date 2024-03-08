@@ -7,8 +7,8 @@ openSDUC Documentation
    :scale: 66%
    :align: right
 
-.. image:: /../img/logoIIT.gif
-   :scale: 100%
+.. image:: /../img/IIT40.png
+   :scale: 20%
    :align: right
 
 \ **Open Stochastic Daily Unit Commitment of Thermal and ESS Units** (**openSDUC**)
