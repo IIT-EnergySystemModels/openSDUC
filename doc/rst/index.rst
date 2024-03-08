@@ -4,7 +4,7 @@ openSDUC Documentation
 =======================
 
 .. image:: /../img/Escudo.png
-   :scale: 66%
+   :scale: 70%
    :align: right
 
 .. image:: /../img/IIT40.png
