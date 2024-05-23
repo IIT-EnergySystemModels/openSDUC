@@ -1123,7 +1123,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime   = time.time()
     print('Solving                               ... ', round(SolvingTime), 's')
 
-    print('Objective function value                  ', mSDUC.eTotalTCost.expr())
+    print('Objective function value                  ', mSDUC.eTotalTCost())
 
     #%% inverse index generator to technology and to company
     pTechnologyToGen = pGenToTechnology.reset_index().set_index('Technology').set_axis(['Generator'], axis=1, copy=False)[['Generator']]
