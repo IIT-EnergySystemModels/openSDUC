@@ -870,7 +870,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     pMaxPower         = pMaxPower.reindex        (sorted(pMaxPower.columns        ), axis=1)
     pVariableMinPower = pVariableMinPower.reindex(sorted(pVariableMinPower.columns), axis=1)
     pVariableMaxPower = pVariableMaxPower.reindex(sorted(pVariableMaxPower.columns), axis=1)
-    pMinPower         = pVariableMinPower.where(pVariableMinPower > pMinPower, other=pMaxPower)
+    pMinPower         = pVariableMinPower.where(pVariableMinPower > pMinPower, other=pMinPower)
     pMaxPower         = pVariableMaxPower.where(pVariableMaxPower < pMaxPower, other=pMaxPower)
     pMaxPower2ndBlock = pMaxPower - pMinPower
 
