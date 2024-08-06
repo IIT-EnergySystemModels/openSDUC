@@ -660,7 +660,7 @@
 # For more information on this, and how to apply and follow the GNU AGPL, see
 # <https://www.gnu.org/licenses/>.
 
-# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.29 - January 22, 2023
+# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.30 - August 05, 2024
 # simplicity and transparency in power systems planning
 
 # Developed by
@@ -674,8 +674,6 @@
 #    Andres.Ramos@comillas.edu
 #    https://pascua.iit.comillas.edu/aramos/Ramos_CV.htm
 
-#    with the very valuable collaboration from David Dominguez (david.dominguez@comillas.edu) and Alejandro Rodriguez (argallego@comillas.edu), our local Python gurus
-
 #%% Libraries
 import argparse
 import os
@@ -688,7 +686,7 @@ from   pyomo.opt     import SolverFactory
 
 import matplotlib.pyplot as plt
 
-print('\n #### Academic research license - for non-commercial use only #### \n')
+print('\033[34m#### Academic research license - for non-commercial use only ####\033[0m')
 
 StartTime = time.time()
 
@@ -729,7 +727,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime = time.time()
 
     #%% model declaration
-    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.29 - January 22, 2023')
+    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.30 - August 05, 2024')
 
     #%% reading the sets
     dictSets = DataPortal()
@@ -774,9 +772,9 @@ def openSDUC_run(DirName, CaseName, SolverName):
     dfEnergyInflows.fillna     (0.0, inplace=True)
 
     #%% general parameters
-    pENSCost            = dfParameter['ENSCost' ][0] * 1e-3                                                                        # cost of energy not served        [MEUR/GWh]
-    pCO2Cost            = dfParameter['CO2Cost' ][0]                                                                               # cost of CO2 emission             [EUR/CO2 ton]
-    pTimeStep           = dfParameter['TimeStep'][0].astype('int')                                                                 # duration of the unit time step   [h]
+    pENSCost            = dfParameter['ENSCost' ].iloc[0] * 1e-3                                                                   # cost of energy not served        [MEUR/GWh]
+    pCO2Cost            = dfParameter['CO2Cost' ].iloc[0]                                                                          # cost of CO2 emission             [EUR/CO2 ton]
+    pTimeStep           = dfParameter['TimeStep'].iloc[0].astype('int')                                                            # duration of the unit time step   [h]
 
     pDuration           = dfDuration          ['Duration'    ] * pTimeStep                                                         # duration of load levels          [h]
     pScenProb           = dfScenario          ['Probability' ]                                                                     # probabilities of scenarios       [p.u.]
@@ -959,7 +957,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es:
          if pStorageType[es] == 'Daily'   and mSDUC.n.ord(n) % ( 168/pTimeStep) == 0:
              mSDUC.vESSInventory[sc,n,es].fix(pInitialInventory[es])
-         if pStorageType[es] == 'Weekly'  and mSDUC.n.ord(n) % (8736/pTimeStep) == 0:
+         if pStorageType[es] == 'Weekly'  and mSDUC.n.ord(n) % ( 672/pTimeStep) == 0:
              mSDUC.vESSInventory[sc,n,es].fix(pInitialInventory[es])
          if pStorageType[es] == 'Monthly' and mSDUC.n.ord(n) % (8736/pTimeStep) == 0:
              mSDUC.vESSInventory[sc,n,es].fix(pInitialInventory[es])
@@ -1150,7 +1148,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
         OutputResults.to_frame(name='MW').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_GenerationReserveDown_'+CaseName+'.csv', sep=',')
 
     OutputResults = pd.Series(data=[mSDUC.vTotalOutput[sc,n,g]()*1e3 for sc,n,g in mSDUC.sc*mSDUC.n*mSDUC.g], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.g)))
-    OutputResults.to_frame(name='MW').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_GenerationOutput_'+CaseName+'.csv', sep=',')
+    OutputResults.to_frame(name='MW').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_Generation_'+CaseName+'.csv', sep=',')
 
     OutputResults = pd.Series(data=[mSDUC.vENS[sc,n]()*1e3 for sc,n in mSDUC.sc*mSDUC.n], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n)))
     OutputResults.to_frame(name='MW').reset_index().pivot_table(index=['level_0','level_1'], values='MW').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_PNS_'+CaseName+'.csv', sep=',')
@@ -1159,7 +1157,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], values='GWh').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ENS_'+CaseName+'.csv', sep=',')
 
     OutputResults = pd.Series(data=[(mSDUC.vTotalOutput[sc,n,g].ub-mSDUC.vTotalOutput[sc,n,g]())*1e3 for sc,n,g in mSDUC.sc*mSDUC.n*mSDUC.r], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.r)))
-    OutputResults.to_frame(name='MW').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_RESCurtailment_'+CaseName+'.csv', sep=',')
+    OutputResults.to_frame(name='MW').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_GenerationCurtailment_'+CaseName+'.csv', sep=',')
 
     #%% plot SRMC for all the scenarios
     RESCurtailment = OutputResults.loc[:,:,:]
@@ -1185,7 +1183,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     #%% outputting the ESS operation
     if len(mSDUC.es):
         OutputResults = pd.Series(data=[mSDUC.vESSCharge[sc,n,es]()*1e3                                        for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.es)))
-        OutputResults.to_frame(name='MW' ).reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW' ).rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ESSChargeOutput_'+CaseName+'.csv', sep=',')
+        OutputResults.to_frame(name='MW' ).reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW' ).rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_ESSCharge_'+CaseName+'.csv', sep=',')
 
         OutputResults = pd.Series(data=[sum(OutputResults[sc,n,es] for es in mSDUC.es if (gt,es) in mSDUC.t2g) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for es in mSDUC.es if (gt,es) in mSDUC.t2g)], index=pd.MultiIndex.from_tuples([(sc,n,gt) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for es in mSDUC.es if (gt,es) in mSDUC.t2g)]))
         OutputResults.to_frame(name='MW' ).reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW' ).rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_TechnologyCharge_'+CaseName+'.csv', sep=',')
@@ -1206,29 +1204,29 @@ def openSDUC_run(DirName, CaseName, SolverName):
 
     OutputResults = pd.Series(data=[mSDUC.vTotalOutput[sc,n,g]()*1e3                                           for sc,n,g  in mSDUC.sc*mSDUC.n*mSDUC.g ], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.g )))
     OutputResults = pd.Series(data=[sum(OutputResults[sc,n,g] for g  in mSDUC.g  if (gt,g ) in mSDUC.t2g)      for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for g in mSDUC.g if (gt,g) in mSDUC.t2g)], index=pd.MultiIndex.from_tuples([(sc,n,gt) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for g in mSDUC.g if (gt,g) in mSDUC.t2g)]))
-    OutputResults.to_frame(name='MW').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_TechnologyOutput_'+CaseName+'.csv', sep=',')
+    OutputResults.to_frame(name='MW').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='MW').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_Technology_'+CaseName+'.csv', sep=',')
 
     TechnologyOutput = OutputResults.loc[:,:,:]
 
-    for sc in mSDUC.sc:
-        fig, fg = plt.subplots()
-        fg.stackplot(range(len(mSDUC.n)),  TechnologyOutput.loc[sc,:,:].values.reshape(len(mSDUC.n),len(mSDUC.gt)).transpose().tolist(), baseline='zero', labels=list(mSDUC.gt))
-        fg.plot     (range(len(mSDUC.n)), -TechnologyCharge.loc[sc,:,'ESS'], label='ESSCharge', linewidth=0.5, color='b')
-        fg.plot     (range(len(mSDUC.n)),  pDemand[sc]*1e3,                  label='Demand'   , linewidth=0.5, color='k')
-        fg.set(xlabel='Hours', ylabel='MW')
-        plt.title(sc)
-        fg.tick_params(axis='x', rotation=90)
-        fg.legend()
-        plt.tight_layout()
-        #plt.show()
-        plt.savefig(_path+'/oUC_Plot_TechnologyOutput_'+sc+'_'+CaseName+'.png', bbox_inches=None)
+    # for sc in mSDUC.sc:
+    #     fig, fg = plt.subplots()
+    #     fg.stackplot(range(len(mSDUC.n)),  TechnologyOutput.loc[sc,:,:].values.reshape(len(mSDUC.n),len(mSDUC.gt)).transpose().tolist(), baseline='zero', labels=list(mSDUC.gt))
+    #     fg.plot     (range(len(mSDUC.n)), -TechnologyCharge.loc[sc,:,'ESS'], label='ESSCharge', linewidth=0.5, color='b')
+    #     fg.plot     (range(len(mSDUC.n)),  pDemand[sc]*1e3,                  label='Demand'   , linewidth=0.5, color='k')
+    #     fg.set(xlabel='Hours', ylabel='MW')
+    #     plt.title(sc)
+    #     fg.tick_params(axis='x', rotation=90)
+    #     fg.legend()
+    #     plt.tight_layout()
+    #     #plt.show()
+    #     plt.savefig(_path+'/oUC_Plot_Technology_'+sc+'_'+CaseName+'.png', bbox_inches=None)
 
-    OutputResults = pd.Series(data=[mSDUC.vTotalOutput[sc,n,g]()*pDuration[n]                          for sc,n,g in mSDUC.sc*mSDUC.n*mSDUC.g], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.g)))
+    OutputResults = pd.Series(data=[mSDUC.vTotalOutput[sc,n,g]()*pDuration[n]                          for sc,n,g  in mSDUC.sc*mSDUC.n*mSDUC.g], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n*mSDUC.g)))
     OutputResults = pd.Series(data=[sum(OutputResults[sc,n,g] for g in mSDUC.g if (gt,g) in mSDUC.t2g) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for g in mSDUC.g if (gt,g) in mSDUC.t2g)], index=pd.MultiIndex.from_tuples([(sc,n,gt) for sc,n,gt in mSDUC.sc*mSDUC.n*mSDUC.gt if sum(1 for g in mSDUC.g if (gt,g) in mSDUC.t2g)]))
     OutputResults.to_frame(name='GWh').reset_index().pivot_table(index=['level_0','level_1'], columns='level_2', values='GWh').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_TechnologyEnergy_'+CaseName+'.csv', sep=',')
 
     #%% outputting the SRMC
-    if SolverName == 'gurobi':
+    if SolverName == 'gurobi' or SolverName == 'appsi_highs':
         OutputResults = pd.Series(data=[mSDUC.dual[mSDUC.eBalance[sc,n]]*1e3/pScenProb[sc]/pDuration[n] for sc,n in mSDUC.sc*mSDUC.n], index=pd.MultiIndex.from_tuples(list(mSDUC.sc*mSDUC.n)))
         OutputResults.to_frame(name='SRMC').reset_index().pivot_table(index=['level_0','level_1'], values='SRMC').rename_axis(['Scenario','LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(_path+'/oUC_Result_SRMC_'+CaseName+'.csv', sep=',')
 
@@ -1251,7 +1249,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime          = time.time()
     print('Writing output results                ... ', round(WritingResultsTime), 's')
     print('Total time                            ... ', round(ReadingDataTime + GeneratingOFTime + GeneratingRBITime + GeneratingGenConsTime + GeneratingRampsTime + GeneratingMinUDTime + SolvingTime + WritingResultsTime), 's')
-    print('\n #### Academic research license - for non-commercial use only #### \n')
+    print('\033[34m#### Academic research license - for non-commercial use only ####\033[0m')
 
 if __name__ == '__main__':
     main()

@@ -48,7 +48,7 @@ A description of the system parameters included in the file ``oT_Data_Parameter.
 File              Description                                                                              
 ================  =======================================================================================  ================
 ENSCost           Cost of energy not served. Cost of load curtailment. Value of Lost Load (VoLL)           €/MWh   
-CO2Cost           Cost of CO2 emissions                                                                    €/t CO2   
+CO2Cost           Cost of CO2 emissions                                                                    €/tCO2
 TimeStep          Duration of the time step for the load levels (hourly, bi-hourly, trihourly, etc.).      h
 ================  =======================================================================================  ================
 
@@ -134,7 +134,7 @@ ConstantTerm          Constant term (intercept) of the heat rate straight line  
 OMVariableCost        O&M variable cost                                                    €/MWh
 StartUpCost           Startup  cost                                                        M€
 ShutDownCost          Shutdown cost                                                        M€
-CO2EmissionRate       CO2 emission rate                                                    t CO2/MWh
+CO2EmissionRate       CO2 emission rate                                                    tCO2/MWh
 ====================  ===================================================================  ============================  
 
 A generator with linear variable cost > 0 is considered a thermal unit. If its maximum storage > 0 is considered an ESS.

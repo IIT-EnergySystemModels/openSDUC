@@ -55,7 +55,7 @@ Identifier    Identifier  Header     Description
 Scenario      Load level  Generator  Downward operating reserve [MW]
 ============  ==========  =========  ===============================
 
-File ``oUC_Result_GenerationOutput.csv``
+File ``oUC_Result_Generation.csv``
 
 ============  ==========  =========  ==============================
 Identifier    Identifier  Header     Description
@@ -63,7 +63,7 @@ Identifier    Identifier  Header     Description
 Scenario      Load level  Generator  Output (discharge in ESS) [MW]
 ============  ==========  =========  ==============================
 
-File ``oUC_Result_RESCurtailment.csv``
+File ``oUC_Result_GenerationCurtailment.csv``
 
 ============  ==========  =============  ===========================
 Identifier    Identifier  Header         Description
@@ -84,10 +84,10 @@ File ``oUC_Result_GenerationEmission.csv``
 ============  ==========  =========  ===============================
 Identifier    Identifier  Header     Description
 ============  ==========  =========  ===============================
-Scenario      Load level  Generator  CO2 emission [t CO2]
+Scenario      Load level  Generator  CO2 emission [tCO2]
 ============  ==========  =========  ===============================
 
-File ``oUC_Result_TechnologyOutput.csv``
+File ``oUC_Result_Technology.csv``
 
 ============  ==========  ==========  ==============================
 Identifier    Identifier  Header      Description
@@ -111,7 +111,7 @@ Identifier    Identifier  Header      Description
 Scenario      Load level  Technology  Energy (discharge in ESS) [GWh]
 ============  ==========  ==========  ===============================
 
-File ``oUC_Result_ESSChargeOutput.csv``
+File ``oUC_Result_ESSCharge.csv``
 
 ============  ==========  =========  ===========================
 Identifier    Identifier  Header     Description
