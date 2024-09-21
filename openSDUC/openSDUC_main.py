@@ -660,7 +660,7 @@
 # For more information on this, and how to apply and follow the GNU AGPL, see
 # <https://www.gnu.org/licenses/>.
 
-# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.30 - August 05, 2024
+# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.31 - September 21, 2024
 # simplicity and transparency in power systems planning
 
 # Developed by
@@ -727,7 +727,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime = time.time()
 
     #%% model declaration
-    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.30 - August 05, 2024')
+    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.31 - September 21, 2024')
 
     #%% reading the sets
     dictSets = DataPortal()
@@ -837,12 +837,12 @@ def openSDUC_run(DirName, CaseName, SolverName):
     print('Reading    input data                 ... ', round(ReadingDataTime), 's')
 
     #%% defining subsets: active load levels (n), thermal units (t), ESS units (es), all the lines (la), candidate lines (lc) and lines with losses (ll)
-    mSDUC.n  = Set(initialize=mSDUC.nn, ordered=True , doc='load levels'     , filter=lambda mSDUC,nn: nn in mSDUC.nn and pDuration     [nn] >  0  )
-    mSDUC.n2 = Set(initialize=mSDUC.nn, ordered=True , doc='load levels'     , filter=lambda mSDUC,nn: nn in mSDUC.nn and pDuration     [nn] >  0  )
-    mSDUC.g  = Set(initialize=mSDUC.gg, ordered=False, doc='generating units', filter=lambda mSDUC,gg: gg in mSDUC.gg and pRatedMaxPower[gg] >  0.0)
-    mSDUC.t  = Set(initialize=mSDUC.g , ordered=False, doc='thermal    units', filter=lambda mSDUC,g : g  in mSDUC.g  and pLinearVarCost [g] >  0.0)
-    mSDUC.r  = Set(initialize=mSDUC.g , ordered=False, doc='RES        units', filter=lambda mSDUC,g : g  in mSDUC.g  and pLinearVarCost [g] == 0.0 and pRatedMaxStorage[g] == 0.0)
-    mSDUC.es = Set(initialize=mSDUC.g , ordered=False, doc='ESS        units', filter=lambda mSDUC,g : g  in mSDUC.g  and                               pRatedMaxStorage[g] >  0.0)
+    mSDUC.n  = Set(doc='load levels'     , initialize=[nn for nn in mSDUC.nn if pDuration     [nn] >  0  ])
+    mSDUC.n2 = Set(doc='load levels'     , initialize=[nn for nn in mSDUC.nn if pDuration     [nn] >  0  ])
+    mSDUC.g  = Set(doc='generating units', initialize=[gg for gg in mSDUC.gg if pRatedMaxPower[gg] >  0.0])
+    mSDUC.t  = Set(doc='thermal    units', initialize=[g  for g  in mSDUC.g  if pLinearVarCost [g] >  0.0])
+    mSDUC.r  = Set(doc='RES        units', initialize=[g  for g  in mSDUC.g  if pLinearVarCost [g] == 0.0 and pRatedMaxStorage[g] == 0.0])
+    mSDUC.es = Set(doc='ESS        units', initialize=[g  for g  in mSDUC.g  if                               pRatedMaxStorage[g] >  0.0])
 
     # non-RES units
     mSDUC.nr = mSDUC.g - mSDUC.r
@@ -924,20 +924,29 @@ def openSDUC_run(DirName, CaseName, SolverName):
             pSystemOutput     += pInitialOutput[go]
 
     #%% variables
-    mSDUC.vTotalVCost     = Var(                             within=NonNegativeReals,                                                                            doc='total system variable cost [MEUR]')
-    mSDUC.vTotalECost     = Var(                             within=NonNegativeReals,                                                                            doc='total system emission cost [MEUR]')
-    mSDUC.vTotalOutput    = Var(mSDUC.sc, mSDUC.n, mSDUC.g , within=NonNegativeReals, bounds=lambda mSDUC,sc,n,g :(0.0,pMaxPower          [g ][sc,n]),           doc='total output of the unit     [GW]')
-    mSDUC.vOutput2ndBlock = Var(mSDUC.sc, mSDUC.n, mSDUC.nr, within=NonNegativeReals, bounds=lambda mSDUC,sc,n,nr:(0.0,pMaxPower2ndBlock  [nr][sc,n]),           doc='second block of the unit     [GW]')
-    mSDUC.vReserveUp      = Var(mSDUC.sc, mSDUC.n, mSDUC.nr, within=NonNegativeReals, bounds=lambda mSDUC,sc,n,nr:(0.0,pMaxPower2ndBlock  [nr][sc,n]),           doc='operating reserve up         [GW]')
-    mSDUC.vReserveDown    = Var(mSDUC.sc, mSDUC.n, mSDUC.nr, within=NonNegativeReals, bounds=lambda mSDUC,sc,n,nr:(0.0,pMaxPower2ndBlock  [nr][sc,n]),           doc='operating reserve down       [GW]')
-    mSDUC.vESSInventory   = Var(mSDUC.sc, mSDUC.n, mSDUC.es, within=NonNegativeReals, bounds=lambda mSDUC,sc,n,es:(pMinStorage[es][sc,n],pMaxStorage[es][sc,n]), doc='ESS inventory               [GWh]')
-    mSDUC.vESSSpillage    = Var(mSDUC.sc, mSDUC.n, mSDUC.es, within=NonNegativeReals,                                                                            doc='ESS spillage                [GWh]')
-    mSDUC.vESSCharge      = Var(mSDUC.sc, mSDUC.n, mSDUC.es, within=NonNegativeReals, bounds=lambda mSDUC,sc,n,es:(0.0,pMaxCharge         [es]      ),           doc='ESS    charge power          [GW]')
-    mSDUC.vENS            = Var(mSDUC.sc, mSDUC.n,           within=NonNegativeReals, bounds=lambda mSDUC,sc,n   :(0.0,pDemand                [sc,n]),           doc='energy not served in node    [GW]')
+    mSDUC.vTotalVCost     = Var(                                      within=NonNegativeReals, doc='total system variable cost [MEUR]')
+    mSDUC.vTotalECost     = Var(                                      within=NonNegativeReals, doc='total system emission cost [MEUR]')
+    mSDUC.vTotalOutput    = Var(mSDUC.sc, mSDUC.n, mSDUC.g , within=NonNegativeReals, doc='total output of the unit     [GW]')
+    mSDUC.vOutput2ndBlock = Var(mSDUC.sc, mSDUC.n, mSDUC.nr, within=NonNegativeReals, doc='second block of the unit     [GW]')
+    mSDUC.vReserveUp      = Var(mSDUC.sc, mSDUC.n, mSDUC.nr, within=NonNegativeReals, doc='operating reserve up         [GW]')
+    mSDUC.vReserveDown    = Var(mSDUC.sc, mSDUC.n, mSDUC.nr, within=NonNegativeReals, doc='operating reserve down       [GW]')
+    mSDUC.vESSInventory   = Var(mSDUC.sc, mSDUC.n, mSDUC.es, within=NonNegativeReals, doc='ESS inventory               [GWh]')
+    mSDUC.vESSSpillage    = Var(mSDUC.sc, mSDUC.n, mSDUC.es, within=NonNegativeReals, doc='ESS spillage                [GWh]')
+    mSDUC.vESSCharge      = Var(mSDUC.sc, mSDUC.n, mSDUC.es, within=NonNegativeReals, doc='ESS    charge power          [GW]')
+    mSDUC.vENS            = Var(mSDUC.sc, mSDUC.n,           within=NonNegativeReals, doc='energy not served in node    [GW]')
 
-    mSDUC.vCommitment     = Var(          mSDUC.n, mSDUC.nr, within=Binary,                                                                                      doc='commitment of the unit      {0,1}')
-    mSDUC.vStartUp        = Var(          mSDUC.n, mSDUC.nr, within=Binary,                                                                                      doc='StartUp    of the unit      {0,1}')
-    mSDUC.vShutDown       = Var(          mSDUC.n, mSDUC.nr, within=Binary,                                                                                      doc='ShutDown   of the unit      {0,1}')
+    mSDUC.vCommitment     = Var(          mSDUC.n, mSDUC.nr, within=Binary,           doc='commitment of the unit      {0,1}')
+    mSDUC.vStartUp        = Var(          mSDUC.n, mSDUC.nr, within=Binary,           doc='StartUp    of the unit      {0,1}')
+    mSDUC.vShutDown       = Var(          mSDUC.n, mSDUC.nr, within=Binary,           doc='ShutDown   of the unit      {0,1}')
+
+    [mSDUC.vTotalOutput   [sc,n,g ].setub(pMaxPower        [sc,n,g ]) for sc,n,g  in mSDUC.sc*mSDUC.n*mSDUC.g ]
+    [mSDUC.vOutput2ndBlock[sc,n,nr].setub(pMaxPower2ndBlock[sc,n,nr]) for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.nr]
+    [mSDUC.vReserveUp     [sc,n,nr].setub(pMaxPower2ndBlock[sc,n,nr]) for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.nr]
+    [mSDUC.vReserveDown   [sc,n,nr].setub(pMaxPower2ndBlock[sc,n,nr]) for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.nr]
+    [mSDUC.vESSInventory  [sc,n,es].setlb(pMinStorage      [sc,n,es]) for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es]
+    [mSDUC.vESSInventory  [sc,n,es].setub(pMaxStorage      [sc,n,es]) for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es]
+    [mSDUC.vESSCharge     [sc,n,es].setub(pMaxCharge       [sc,n,es]) for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es]
+    [mSDUC.vENS           [sc,n   ].setub(pDemand          [sc,n   ]) for sc,n    in mSDUC.sc*mSDUC.n         ]
 
     # fixing the ESS inventory at the last load level at the end of the time scope
     for sc,es in mSDUC.sc*mSDUC.es:
