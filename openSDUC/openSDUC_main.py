@@ -660,7 +660,7 @@
 # For more information on this, and how to apply and follow the GNU AGPL, see
 # <https://www.gnu.org/licenses/>.
 
-# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.31 - September 21, 2024
+# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.31 - September 22, 2024
 # simplicity and transparency in power systems planning
 
 # Developed by
@@ -727,7 +727,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime = time.time()
 
     #%% model declaration
-    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.31 - September 21, 2024')
+    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.31 - September 22, 2024')
 
     #%% reading the sets
     dictSets = DataPortal()
@@ -738,12 +738,12 @@ def openSDUC_run(DirName, CaseName, SolverName):
     dictSets.load(filename=_path+'/oUC_Dict_Technology_'+CaseName+'.csv', set='gt', format='set')
     dictSets.load(filename=_path+'/oUC_Dict_Company_'   +CaseName+'.csv', set='co', format='set')
 
-    mSDUC.sc = Set(initialize=dictSets['sc'], ordered=True,  doc='scenarios'   )
-    mSDUC.nn = Set(initialize=dictSets['n' ], ordered=True,  doc='load levels' )
-    mSDUC.gg = Set(initialize=dictSets['g' ], ordered=False, doc='units'       )
-    mSDUC.gt = Set(initialize=dictSets['gt'], ordered=False, doc='technologies')
-    mSDUC.co = Set(initialize=dictSets['co'], ordered=False, doc='companies'   )
-    mSDUC.st = Set(initialize=dictSets['st'], ordered=False, doc='ESS types'   )
+    mSDUC.sc = Set(initialize=dictSets['sc'], doc='scenarios'   )
+    mSDUC.nn = Set(initialize=dictSets['n' ], doc='load levels' )
+    mSDUC.gg = Set(initialize=dictSets['g' ], doc='units'       )
+    mSDUC.gt = Set(initialize=dictSets['gt'], doc='technologies')
+    mSDUC.co = Set(initialize=dictSets['co'], doc='companies'   )
+    mSDUC.st = Set(initialize=dictSets['st'], doc='ESS types'   )
 
     #%% reading data from CSV files
     dfParameter          = pd.read_csv(_path+'/oUC_Data_Parameter_'        +CaseName+'.csv', index_col=[0  ])
@@ -939,14 +939,14 @@ def openSDUC_run(DirName, CaseName, SolverName):
     mSDUC.vStartUp        = Var(          mSDUC.n, mSDUC.nr, within=Binary,           doc='StartUp    of the unit      {0,1}')
     mSDUC.vShutDown       = Var(          mSDUC.n, mSDUC.nr, within=Binary,           doc='ShutDown   of the unit      {0,1}')
 
-    [mSDUC.vTotalOutput   [sc,n,g ].setub(pMaxPower        [sc,n,g ]) for sc,n,g  in mSDUC.sc*mSDUC.n*mSDUC.g ]
-    [mSDUC.vOutput2ndBlock[sc,n,nr].setub(pMaxPower2ndBlock[sc,n,nr]) for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.nr]
-    [mSDUC.vReserveUp     [sc,n,nr].setub(pMaxPower2ndBlock[sc,n,nr]) for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.nr]
-    [mSDUC.vReserveDown   [sc,n,nr].setub(pMaxPower2ndBlock[sc,n,nr]) for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.nr]
-    [mSDUC.vESSInventory  [sc,n,es].setlb(pMinStorage      [sc,n,es]) for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es]
-    [mSDUC.vESSInventory  [sc,n,es].setub(pMaxStorage      [sc,n,es]) for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es]
-    [mSDUC.vESSCharge     [sc,n,es].setub(pMaxCharge       [sc,n,es]) for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es]
-    [mSDUC.vENS           [sc,n   ].setub(pDemand          [sc,n   ]) for sc,n    in mSDUC.sc*mSDUC.n         ]
+    [mSDUC.vTotalOutput   [sc,n,g ].setub(pMaxPower.loc        [(sc,n),g ]) for sc,n,g  in mSDUC.sc*mSDUC.n*mSDUC.g ]
+    [mSDUC.vOutput2ndBlock[sc,n,nr].setub(pMaxPower2ndBlock.loc[(sc,n),nr]) for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.nr]
+    [mSDUC.vReserveUp     [sc,n,nr].setub(pMaxPower2ndBlock.loc[(sc,n),nr]) for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.nr]
+    [mSDUC.vReserveDown   [sc,n,nr].setub(pMaxPower2ndBlock.loc[(sc,n),nr]) for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.nr]
+    [mSDUC.vESSInventory  [sc,n,es].setlb(pMinStorage.loc      [(sc,n),es]) for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es]
+    [mSDUC.vESSInventory  [sc,n,es].setub(pMaxStorage.loc      [(sc,n),es]) for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es]
+    [mSDUC.vESSCharge     [sc,n,es].setub(pMaxCharge.loc       [       es]) for sc,n,es in mSDUC.sc*mSDUC.n*mSDUC.es]
+    [mSDUC.vENS           [sc,n   ].setub(pDemand.loc          [ sc,n    ]) for sc,n    in mSDUC.sc*mSDUC.n         ]
 
     # fixing the ESS inventory at the last load level at the end of the time scope
     for sc,es in mSDUC.sc*mSDUC.es:
@@ -1137,7 +1137,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     pTechnologyToGen = pTechnologyToGen.loc[pTechnologyToGen['Generator'].isin(mSDUC.g)]
     pTechnology2Gen  = pTechnologyToGen.reset_index().set_index(['Technology', 'Generator'])
 
-    mSDUC.t2g = Set(initialize=pTechnology2Gen.index, ordered=False, doc='technology to generator')
+    mSDUC.t2g = Set(initialize=pTechnology2Gen.index, doc='technology to generator')
 
     #%% outputting the generation operation
 
