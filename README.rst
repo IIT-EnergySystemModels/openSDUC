@@ -1,6 +1,6 @@
 
 
-.. image:: https://github.com/IIT-EnergySystemModels/openSDUC/blob/main/doc/img/openSDUC.jpg
+.. image:: https://pascua.iit.comillas.edu/aramos/openSDUC.jpg
    :target: https://pascua.iit.comillas.edu/aramos/openSDUC/index.html
    :alt: logo
    :align: center
@@ -17,8 +17,7 @@
 .. image:: https://img.shields.io/readthedocs/opensduc
    :target: https://opensduc.readthedocs.io/en/latest/index.html
    :alt: docs
-   
-  
+
 .. image:: https://img.shields.io/badge/License-AGPL%20v3-blue.svg
    :target: https://github.com/IIT-EnergySystemModels/openSDUC/blob/master/LICENSE
    :alt: AGPL
