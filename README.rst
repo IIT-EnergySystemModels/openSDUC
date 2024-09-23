@@ -1,12 +1,11 @@
 
-
 .. image:: https://pascua.iit.comillas.edu/aramos/openSDUC.jpg
    :target: https://pascua.iit.comillas.edu/aramos/openSDUC/index.html
    :alt: logo
    :align: center
    
 |   
-.. image:: https://img.shields.io/pypi/v/openSDUC
+.. image:: https://badge.fury.io/py/openSDUC.svg
     :target: https://badge.fury.io/py/openSDUC
     :alt: PyPI
 
