@@ -3,12 +3,12 @@
    :target: https://pascua.iit.comillas.edu/aramos/openSDUC/index.html
    :alt: logo
    :align: center
-   
+
 |
 
 .. image:: https://badge.fury.io/py/openSDUC.svg
-    :target: https://badge.fury.io/py/openSDUC
-    :alt: PyPI
+   :target: https://badge.fury.io/py/openSDUC
+   :alt: PyPI
 
 .. image:: https://img.shields.io/pypi/pyversions/openSDUC.svg
    :target: https://pypi.python.org/pypi/openSDUC
