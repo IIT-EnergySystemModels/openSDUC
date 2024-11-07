@@ -836,7 +836,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime       = time.time()
     print('Reading    input data                 ... ', round(ReadingDataTime), 's')
 
-    #%% defining subsets: active load levels (n), thermal units (t), ESS units (es), all the lines (la), candidate lines (lc) and lines with losses (ll)
+    #%% defining subsets: active load levels (n), thermal units (t), ESS units (es), all the lines (la), candidate lines (lc), and lines with losses (ll)
     mSDUC.n  = Set(doc='load levels'     , initialize=[nn for nn in mSDUC.nn if pDuration     [nn] >  0  ])
     mSDUC.n2 = Set(doc='load levels'     , initialize=[nn for nn in mSDUC.nn if pDuration     [nn] >  0  ])
     mSDUC.g  = Set(doc='generating units', initialize=[gg for gg in mSDUC.gg if pRatedMaxPower[gg] >  0.0])
