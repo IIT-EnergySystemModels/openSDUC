@@ -807,7 +807,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     pEnergyInflows.fillna     (0.0, inplace=True)
 
     if pTimeStep > 1:
-        # assign duration 0 to load levels not being considered, active load levels are at the end of every pTimeStep
+        # assign duration 0 to load levels not being considered; active load levels are at the end of every pTimeStep
         for i in range(pTimeStep-2,-1,-1):
             pDuration[range(i,len(mSDUC.nn),pTimeStep)] = 0
 
@@ -909,7 +909,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     # thermal and variable units ordered by increasing variable cost
     mSDUC.go = pLinearVarCost.sort_values().index
 
-    # determine the initial committed units and their output
+    # determine the initially committed units and their output
     pInitialOutput = pd.Series([0.0]*len(mSDUC.g), dfGeneration.index)
     pInitialUC     = pd.Series([0.0]*len(mSDUC.g), dfGeneration.index)
     pSystemOutput  = 0.0
