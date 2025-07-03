@@ -140,6 +140,8 @@ CO2EmissionRate       CO2 emission rate                                         
 A generator with linear variable cost > 0 is considered a thermal unit. If its maximum storage > 0 is considered an ESS.
 Internally, all the maximum and minimum power values below 1e-5 times the maximum system demand will be converted into 0 by the model.
 
+The startup cost of a generating unit refers to the expenses incurred when bringing a power generation unit online, from an idle state to a point where it can produce electricity.
+
 Energy inflows
 --------------
 
