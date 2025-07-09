@@ -85,7 +85,7 @@ Demand
 A description of the data included in the file ``oT_Data_Demand.csv`` follows:
 
 ==============  ==========  ===============================  ==
-Identifier                  Description
+Identifiers                 Description
 ==========================  ===============================  ==
 Scenario        Load level  Power demand in the load level   MW
 ==============  ==========  ===============================  ==
@@ -98,7 +98,7 @@ Operating reserves
 A description of the data included in the file ``oT_Data_OperatingReserve.csv`` follows:
 
 ==============  ==========  ======  =============================================  ==
-Identifier                  Header  Description
+Identifiers                 Header  Description
 ==========================  ======  =============================================  ==
 Scenario        Load level  Up      Upward   operating reserves in the load level  MW
 Scenario        Load level  Down    Downward operating reserves in the load level  MW
@@ -112,10 +112,10 @@ Generation
 A description of the data included for each generating unit in the file ``oT_Data_Generation.csv`` follows:
 
 ====================  ===================================================================  ============================
-Header                Description   
-====================  ===================================================================  ============================  
-Technology            Technology of the generator (nuclear, coal, CCGT, OCGT, ESS, etc.)   
-Company               Name of the company owning the generator  
+Header                Description
+====================  ===================================================================  ============================
+Technology            Technology of the generator (nuclear, coal, CCGT, OCGT, ESS, etc.)
+Company               Name of the company owning the generator
 StorageType           Storage type (daily, weekly, monthly, etc.)                          Daily/Weekly/Monthly
 MaximumPower          Maximum power output (discharge for ESS units)                       MW
 MinimumPower          Minimum power output                                                 MW
@@ -135,7 +135,7 @@ OMVariableCost        O&M variable cost                                         
 StartUpCost           Startup  cost                                                        M€
 ShutDownCost          Shutdown cost                                                        M€
 CO2EmissionRate       CO2 emission rate                                                    tCO2/MWh
-====================  ===================================================================  ============================  
+====================  ===================================================================  ============================
 
 A generator with linear variable cost > 0 is considered a thermal unit. If its maximum storage > 0 is considered an ESS.
 Internally, all the maximum and minimum power values below 1e-5 times the maximum system demand will be converted to 0 by the model.
@@ -148,7 +148,7 @@ Energy inflows
 A description of the data included in the file ``oT_Data_EnergyInflows.csv`` follows:
 
 ==============  ==========  =========  =============================  ==
-Identifier                  Header     Description
+Identifiers                 Header     Description
 ==========================  =========  =============================  ==
 Scenario        Load level  Generator  Energy inflows by load level   MW
 ==============  ==========  =========  =============================  ==
@@ -161,7 +161,7 @@ Variable maximum and minimum generation
 A description of the data included in the file ``oT_Data_MaximumGeneration.csv`` and ``oT_Data_MinimumGeneration.csv`` follows:
 
 ==============  ==========  =========  =============================================================  ==
-Identifier                  Header     Description
+Identifiers                 Header     Description
 ==========================  =========  =============================================================  ==
 Scenario        Load level  Generator  Maximum (minimum) power generation of the unit by load level   MW
 ==============  ==========  =========  =============================================================  ==
@@ -175,7 +175,7 @@ Variable maximum and minimum storage
 A description of the data included in the files ``oT_Data_MaximumStorage.csv`` and ``oT_Data_MinimumStorage.csv`` follows:
 
 ==============  ==========  =========  ====================================================  ===
-Identifier                  Header     Description
+Identifiers                 Header     Description
 ==========================  =========  ====================================================  ===
 Scenario        Load level  Generator  Maximum (minimum) storage of the ESS by load level    GWh
 ==============  ==========  =========  ====================================================  ===
