@@ -1,20 +1,20 @@
-.. openSDUC documentation master file, created by Andres Ramos
+﻿.. openSDUC documentation master file, created by Andres Ramos
 
 Input Data
 ==========
 
-All the input files must be in the same folder of the openSDUC python file.
+All the input files must be in the same folder as the openSDUC Python file.
 
 Dictionaries. Sets
 ------------------
-The dictionaries include all the possible elements of the corresponding sets included in the optimization problem
+The dictionaries include all the possible elements of the corresponding sets included in the optimization problem.
 
 ==========================  ========================================================================================================================
 File                        Description
 ==========================  ========================================================================================================================
 ``oT_Dict_Scenario.csv``    Scenario. Short-term uncertainties (scenarios) (e.g., s001 to s100)
 ``oT_Dict_LoadLevel.csv``   Load level (e.g., 2020-01-01T00:00:00+01:00 to 2020-01-07T23:00:00+01:00). Load levels with duration 0 are ignored
-``oT_Dict_Generation.csv``  Generation units (thermal, ESS and variable)
+``oT_Dict_Generation.csv``  Generation units (thermal, ESS, and variable)
 ``oT_Dict_Technology.csv``  Generation technologies
 ``oT_Dict_Company.csv``     Companies
 ``oT_Dict_Storage.csv``     ESS type (daily, weekly, monthly)
@@ -31,7 +31,7 @@ File                                    Description
 ``oT_Data_Duration.csv``                Duration of the load levels
 ``oT_Data_Scenario.csv``                Short-term uncertainties
 ``oT_Data_Demand.csv``                  Demand
-``oT_Data_OperatingReserve.csv``        Upward and downward operating reserves (include aFRR, mFRR and RR for electricity balancing from ENTSO-E)
+``oT_Data_OperatingReserve.csv``        Upward and downward operating reserves (include aFRR, mFRR, and RR for electricity balancing from ENTSO-E)
 ``oT_Data_Generation.csv``              Generation data
 ``oT_Data_EnergyInflows.csv``           Energy inflows for ESS (e.g., storage hydro or open-loop pumped-storage hydro) by load level
 ``oT_Data_MinimumGeneration.csv``       Variable minimum power generation by load level
@@ -49,11 +49,11 @@ File              Description
 ================  =======================================================================================  ================
 ENSCost           Cost of energy not served. Cost of load curtailment. Value of Lost Load (VoLL)           €/MWh   
 CO2Cost           Cost of CO2 emissions                                                                    €/tCO2
-TimeStep          Duration of the time step for the load levels (hourly, bi-hourly, trihourly, etc.).      h
+TimeStep          Duration of the time step for the load levels (hourly, bi-hourly, tri-hourly, etc.).     h
 ================  =======================================================================================  ================
 
-A time step greater than one hour it is a convenient way to reduce the load levels of the time scope. The moving average of the demand, operating reserve, variable generation and ESS energy inflows over
-the time step load levels is assigned to active load levels (e.g., the mean value of the three hours is associated to the third hour in a trihourly time step).
+A time step greater than one hour is a convenient way to reduce the load levels of the time scope. The moving average of the demand, operating reserve, variable generation, and ESS energy inflows over
+the time step load levels are assigned to active load levels (e.g., the mean value of the three hours is associated with the third hour in a trihourly time step).
 
 Duration
 --------
@@ -66,7 +66,7 @@ Identifier  Header    Description
 Load level  Duration  Duration of the load level. Load levels with duration 0 are ignored  h
 ==========  ========  ===================================================================  ==
 
-It is a simple way to use isolated snapshots or representative days or just the first three months instead of all the hours of a year to simplify the optimization problem.
+It is a simple way to use isolated snapshots, representative days, or just the first three months instead of all the hours of a year to simplify the optimization problem.
 
 Scenario
 --------
@@ -138,9 +138,9 @@ CO2EmissionRate       CO2 emission rate                                         
 ====================  ===================================================================  ============================  
 
 A generator with linear variable cost > 0 is considered a thermal unit. If its maximum storage > 0 is considered an ESS.
-Internally, all the maximum and minimum power values below 1e-5 times the maximum system demand will be converted into 0 by the model.
+Internally, all the maximum and minimum power values below 1e-5 times the maximum system demand will be converted to 0 by the model.
 
-The startup cost of a generating unit refers to the expenses incurred when bringing a power generation unit online, from an idle state to a point where it can produce electricity.
+The startup cost of generating units refers to the expenses incurred when bringing a power generation unit online, from an idle state to a point where it can produce electricity.
 
 Energy inflows
 --------------
@@ -166,8 +166,8 @@ Identifier      Identifier  Header     Description
 Scenario        Load level  Generator  Maximum (minimum) power generation of the unit by load level   MW
 ==============  ==========  =========  =============================================================  ==
 
-To force a generator to produce 0 a lower value (e.g., 0.1 MW) strictly > 0, but not 0 (in which case the value will be ignored), must be introduced. Internally, all the values below 1e-5 times the maximum system demand will be converted into 0 by the model.
-Columns of this file (names of the generators) must be in the same order that in the generation dictionary.
+To force a generator to produce 0 a small value (e.g., 0.1 MW) strictly > 0, but not 0 (in which case the value will be ignored), must be introduced. Internally, all the values below 1e-5 times the maximum system demand will be converted into 0 by the model.
+Columns of this file (names of the generators) must be in the same order as in the generation dictionary.
 
 Variable maximum and minimum storage
 ---------------------------------------------

@@ -1,4 +1,4 @@
-.. openSDUC documentation master file, created by Andres Ramos
+﻿.. openSDUC documentation master file, created by Andres Ramos
 
 Mathematical Formulation
 ========================
@@ -100,9 +100,9 @@ Upward and downward operating reserves [GW] («``eOperReserveUp``», ``eOperRese
 
 :math:`\sum_g dr_{ng}^ω \geq DR_n^ω \quad \forall ωn`
 
-VRES units (i.e., those with linear variable cost equal to 0 and no storage capacity) do not contribute to the the operating reserves.
+VRES units (i.e., those with linear variable cost equal to 0 and no storage capacity) do not contribute to the operating reserves.
 
-ESS energy inventory (only for load levels multiple of 24, 168 or 672 h depending on the ESS type) [GWh] («``eESSInventory``»)
+ESS energy inventory (only for load levels multiple of 24, 168, or 672 h, depending on the ESS type) [GWh] («``eESSInventory``»)
 
 :math:`i_{n-\tau_e,e}^ω + \sum_{n' = n+\nu-\tau_e}^n DUR_n (EI_{ne}^ω - qp_{ne}^ω + EF_e gc_{ne}^ω) = i_{ne}^ω + s_{ne}^ω \quad \forall ωne`
 
@@ -124,7 +124,7 @@ Total output of a committed unit (all except the VRES units) [GW] («``eTotalOut
 
 :math:`\frac{qp_{ng}^ω}{\underline{GP}_g} = uc_{ng} + \frac{p_{ng}^ω}{\underline{GP}_g} \quad \forall ωng`
 
-Logical relation between commitment, startup and shutdown status of a committed unit (all except the VRE units) [p.u.] («``eUCStrShut``»)
+Logical relation between commitment, startup, and shutdown status of a committed unit (all except the VRE units) [p.u.] («``eUCStrShut``»)
 
 :math:`uc_{ng} - uc_{n-\nu,g} = su_{ng} - sd_{ng} \quad \forall ng`
 
