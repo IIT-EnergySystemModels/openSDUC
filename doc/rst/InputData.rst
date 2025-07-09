@@ -85,8 +85,8 @@ Demand
 A description of the data included in the file ``oT_Data_Demand.csv`` follows:
 
 ==============  ==========  ===============================  ==
-Identifier      Identifier  Description
-==============  ==========  ===============================  ==
+Identifier                  Description
+==========================  ===============================  ==
 Scenario        Load level  Power demand in the load level   MW
 ==============  ==========  ===============================  ==
 
@@ -98,8 +98,8 @@ Operating reserves
 A description of the data included in the file ``oT_Data_OperatingReserve.csv`` follows:
 
 ==============  ==========  ======  =============================================  ==
-Identifier      Identifier  Header  Description
-==============  ==========  ======  =============================================  ==
+Identifier                  Header  Description
+==========================  ======  =============================================  ==
 Scenario        Load level  Up      Upward   operating reserves in the load level  MW
 Scenario        Load level  Down    Downward operating reserves in the load level  MW
 ==============  ==========  ======  =============================================  ==
@@ -148,8 +148,8 @@ Energy inflows
 A description of the data included in the file ``oT_Data_EnergyInflows.csv`` follows:
 
 ==============  ==========  =========  =============================  ==
-Identifier      Identifier  Header     Description
-==============  ==========  =========  =============================  ==
+Identifier                  Header     Description
+==========================  =========  =============================  ==
 Scenario        Load level  Generator  Energy inflows by load level   MW
 ==============  ==========  =========  =============================  ==
 
@@ -161,8 +161,8 @@ Variable maximum and minimum generation
 A description of the data included in the file ``oT_Data_MaximumGeneration.csv`` and ``oT_Data_MinimumGeneration.csv`` follows:
 
 ==============  ==========  =========  =============================================================  ==
-Identifier      Identifier  Header     Description
-==============  ==========  =========  =============================================================  ==
+Identifier                  Header     Description
+==========================  =========  =============================================================  ==
 Scenario        Load level  Generator  Maximum (minimum) power generation of the unit by load level   MW
 ==============  ==========  =========  =============================================================  ==
 
@@ -175,8 +175,8 @@ Variable maximum and minimum storage
 A description of the data included in the files ``oT_Data_MaximumStorage.csv`` and ``oT_Data_MinimumStorage.csv`` follows:
 
 ==============  ==========  =========  ====================================================  ===
-Identifier      Identifier  Header     Description
-==============  ==========  =========  ====================================================  ===
+Identifier                  Header     Description
+==========================  =========  ====================================================  ===
 Scenario        Load level  Generator  Maximum (minimum) storage of the ESS by load level    GWh
 ==============  ==========  =========  ====================================================  ===
 
