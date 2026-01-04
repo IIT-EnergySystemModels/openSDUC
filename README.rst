@@ -64,7 +64,7 @@ Miniconda (recommended)
 2. **Packages and Solver**:
 
    1. Launch a new command prompt (Windows: Win+R, type "cmd", Enter)
-   2. The `HiGHS 1.7.2 <https://ergo-code.github.io/HiGHS/dev/interfaces/python/#python-getting-started>`_ is our recommendation if you want a free and open-source solver.
+   2. The `HiGHS <https://ergo-code.github.io/HiGHS/dev/installation/#Precompiled-Binaries>`_ is our recommendation if you want a free and open-source solver.
    3. Install openSDUC via pip by ``pip install openSDUC``
 
 Solvers
