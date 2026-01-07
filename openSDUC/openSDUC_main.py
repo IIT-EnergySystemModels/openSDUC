@@ -660,7 +660,7 @@
 # For more information on this, and how to apply and follow the GNU AGPL, see
 # <https://www.gnu.org/licenses/>.
 
-# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.32 - January 27, 2025
+# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.32 - January 07, 2026
 # simplicity and transparency in power systems planning
 
 # Developed by
@@ -681,12 +681,15 @@ import pandas        as pd
 import time          # count clock time
 import psutil        # access the number of CPUs
 import pyomo.environ as pyo
-from   pyomo.environ import Set, Var, Binary, NonNegativeReals, RealSet, Constraint, ConcreteModel, Objective, minimize, Suffix, DataPortal
+from   pyomo.environ import Set, Var, Binary, UnitInterval, NonNegativeReals, Constraint, ConcreteModel, Objective, minimize, Suffix, DataPortal
 from   pyomo.opt     import SolverFactory
 
 import matplotlib.pyplot as plt
 
-print('\033[34m#### Academic research license - for non-commercial use only ####\033[0m')
+BLUE   = "\033[34m"
+RESET  = "\033[0m"
+
+print(BLUE  + '#### Academic research license - for non-commercial use only ####' + RESET + '\n')
 
 StartTime = time.time()
 
@@ -697,7 +700,7 @@ parser.add_argument('--solver', type=str, default=None)
 
 DIR    = os.path.dirname(__file__)
 CASE   = '16g'
-SOLVER = 'gurobi'
+SOLVER = 'appsi_highs'
 
 def main():
     args = parser.parse_args()
@@ -727,7 +730,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime = time.time()
 
     #%% model declaration
-    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.32 - January 27, 2025')
+    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.32 - January 07, 2026')
 
     #%% reading the sets
     dictSets = DataPortal()
@@ -807,7 +810,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     pEnergyInflows.fillna     (0.0, inplace=True)
 
     if pTimeStep > 1:
-        # assign duration 0 to load levels not being considered; active load levels are at the end of every pTimeStep
+        # assign duration 0 to load levels not being considered, active load levels are at the end of every pTimeStep
         for i in range(pTimeStep-2,-1,-1):
             pDuration[range(i,len(mSDUC.nn),pTimeStep)] = 0
 
@@ -909,7 +912,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     # thermal and variable units ordered by increasing variable cost
     mSDUC.go = pLinearVarCost.sort_values().index
 
-    # determine the initially committed units and their output
+    # determine the initial committed units and their output
     pInitialOutput = pd.Series([0.0]*len(mSDUC.g), dfGeneration.index)
     pInitialUC     = pd.Series([0.0]*len(mSDUC.g), dfGeneration.index)
     pSystemOutput  = 0.0
@@ -924,8 +927,8 @@ def openSDUC_run(DirName, CaseName, SolverName):
             pSystemOutput     += pInitialOutput[go]
 
     #%% variables
-    mSDUC.vTotalVCost     = Var(                                    within=NonNegativeReals, doc='total system variable cost [MEUR]')
-    mSDUC.vTotalECost     = Var(                                    within=NonNegativeReals, doc='total system emission cost [MEUR]')
+    mSDUC.vTotalVCost     = Var(                           within=NonNegativeReals, doc='total system variable cost [MEUR]')
+    mSDUC.vTotalECost     = Var(                           within=NonNegativeReals, doc='total system emission cost [MEUR]')
     mSDUC.vTotalOutput    = Var(mSDUC.sc*mSDUC.n*mSDUC.g , within=NonNegativeReals, doc='total output of the unit     [GW]')
     mSDUC.vOutput2ndBlock = Var(mSDUC.sc*mSDUC.n*mSDUC.nr, within=NonNegativeReals, doc='second block of the unit     [GW]')
     mSDUC.vReserveUp      = Var(mSDUC.sc*mSDUC.n*mSDUC.nr, within=NonNegativeReals, doc='operating reserve up         [GW]')
@@ -1122,14 +1125,22 @@ def openSDUC_run(DirName, CaseName, SolverName):
     SolverResults.write()                                                                # summary of the solver results
 
     #%% fix values of binary variables to get dual variables and solve it again
-    for n,nr in mSDUC.n*mSDUC.nr:
-        mSDUC.vCommitment[n,nr].fix(round(mSDUC.vCommitment[n,nr]()))
-        mSDUC.vStartUp   [n,nr].fix(round(mSDUC.vStartUp   [n,nr]()))
-        mSDUC.vShutDown  [n,nr].fix(round(mSDUC.vShutDown  [n,nr]()))
+    # for n,nr in mSDUC.n*mSDUC.nr:
+    #     mSDUC.vCommitment[n,nr].fix(round(mSDUC.vCommitment[n,nr]()))
+    #     mSDUC.vStartUp   [n,nr].fix(round(mSDUC.vStartUp   [n,nr]()))
+    #     mSDUC.vShutDown  [n,nr].fix(round(mSDUC.vShutDown  [n,nr]()))
 
-    mSDUC.dual    = Suffix(direction=Suffix.IMPORT)
-    SolverResults = Solver.solve(mSDUC, tee=True)                                        # tee=True displays the output of the solver
-    SolverResults.write()                                                                # summary of the solver results
+    nUnfixedVars = 0
+    for var in mSDUC.component_data_objects(pyo.Var, active=True, descend_into=True):
+        if not var.is_continuous() and not var.is_fixed() and var.value != None:
+            var.fixed  = True          # fix the current value
+            var.domain = UnitInterval  # change the domain to continuous
+            nUnfixedVars += 1
+
+    if nUnfixedVars > 0:
+        mSDUC.dual    = Suffix(direction=Suffix.IMPORT)
+        SolverResults = Solver.solve(mSDUC, tee=True)                                        # tee=True displays the output of the solver
+        SolverResults.write()                                                                # summary of the solver results
 
     SolvingTime = time.time() - StartTime
     StartTime   = time.time()
