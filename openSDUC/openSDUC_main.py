@@ -660,7 +660,7 @@
 # For more information on this, and how to apply and follow the GNU AGPL, see
 # <https://www.gnu.org/licenses/>.
 
-# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.32 - January 07, 2026
+# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.33 - January 07, 2026
 # simplicity and transparency in power systems planning
 
 # Developed by
@@ -730,7 +730,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime = time.time()
 
     #%% model declaration
-    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.32 - January 07, 2026')
+    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.33 - January 07, 2026')
 
     #%% reading the sets
     dictSets = DataPortal()
