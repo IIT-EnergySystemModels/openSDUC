@@ -1282,7 +1282,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime          = time.time()
     print('Writing output results                ... ', round(WritingResultsTime), 's')
     print('Total time                            ... ', round(ReadingDataTime + GeneratingOFTime + GeneratingRBITime + GeneratingGenConsTime + GeneratingRampsTime + GeneratingMinUDTime + SolvingTime + WritingResultsTime), 's')
-    print('\033[34m#### Academic research license - for non-commercial use only ####\033[0m')
+    print(BLUE + '#### Academic research license - for non-commercial use only ####' + RESET + '\n')
 
 if __name__ == '__main__':
     main()
