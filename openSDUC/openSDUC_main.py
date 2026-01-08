@@ -660,7 +660,7 @@
 # For more information on this, and how to apply and follow the GNU AGPL, see
 # <https://www.gnu.org/licenses/>.
 
-# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.33 - January 07, 2026
+# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.33 - January 08, 2026
 # simplicity and transparency in power systems planning
 
 # Developed by
@@ -730,7 +730,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime = time.time()
 
     #%% model declaration
-    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.33 - January 07, 2026')
+    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.33 - January 08, 2026')
 
     #%% reading the sets
     dictSets = DataPortal()
@@ -1124,18 +1124,16 @@ def openSDUC_run(DirName, CaseName, SolverName):
     SolverResults = Solver.solve(mSDUC, tee=True)                                        # tee=True displays the output of the solver
     SolverResults.write()                                                                # summary of the solver results
 
-    #%% fix values of binary variables to get dual variables and solve it again
-    # for n,nr in mSDUC.n*mSDUC.nr:
-    #     mSDUC.vCommitment[n,nr].fix(round(mSDUC.vCommitment[n,nr]()))
-    #     mSDUC.vStartUp   [n,nr].fix(round(mSDUC.vStartUp   [n,nr]()))
-    #     mSDUC.vShutDown  [n,nr].fix(round(mSDUC.vShutDown  [n,nr]()))
-
+    # %% fix values of binary variables to get dual variables and solve it again
     nUnfixedVars = 0
-    for var in mSDUC.component_data_objects(pyo.Var, active=True, descend_into=True):
-        if not var.is_continuous() and not var.is_fixed() and var.value != None:
-            var.fixed  = True          # fix the current value
-            var.domain = UnitInterval  # change the domain to continuous
-            nUnfixedVars += 1
+    for n,nr in mSDUC.n*mSDUC.nr:
+        mSDUC.vCommitment[n,nr].fix(round(mSDUC.vCommitment[n,nr]()))
+        mSDUC.vStartUp   [n,nr].fix(round(mSDUC.vStartUp   [n,nr]()))
+        mSDUC.vShutDown  [n,nr].fix(round(mSDUC.vShutDown  [n,nr]()))
+        mSDUC.vCommitment[n,nr].domain = UnitInterval  # change the domain to continuous
+        mSDUC.vStartUp   [n,nr].domain = UnitInterval  # change the domain to continuous
+        mSDUC.vShutDown  [n,nr].domain = UnitInterval  # change the domain to continuous
+        nUnfixedVars += 1
 
     if nUnfixedVars > 0:
         mSDUC.dual    = Suffix(direction=Suffix.IMPORT)
