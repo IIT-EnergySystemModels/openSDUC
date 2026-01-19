@@ -1,5 +1,5 @@
 """
-Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.33 - January 07, 2026
+Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.34 - January 19, 2026
 
     Args:
         case:   Name of the folder where the CSV files of the case are found
@@ -11,8 +11,8 @@ Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Vers
 
     Examples:
         >>> import openSDUC as oT
-        >>> oT.routine("16g", "C:\\Users\\UserName\\Documents\\GitHub\\openSDUC", "glpk")
+        >>> oT.routine("16g", "C:\\Users\\UserName\\Documents\\GitHub\\openSDUC", "appsi_highs")
 """
-__version__ = "1.3.33"
+__version__ = "1.3.34"
 
 from .openSDUC_main             import main

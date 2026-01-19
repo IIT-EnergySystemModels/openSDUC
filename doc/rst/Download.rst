@@ -22,7 +22,7 @@ Besides, it also requires the following packages:
 
 Cases
 -----
-Here, you have the input files of a small case study of 16 generators.
+Here, you have the input files of a small case study of `16 generators <https://github.com/IIT-EnergySystemModels/openSDUC/tree/main/openSDUC/16g>`_.
 
 Code
 ----
@@ -32,6 +32,6 @@ The **openSDUC** code is provided under the `GNU Affero General Public License <
 - the code can't become part of a closed-source commercial software product
 - any future changes and improvements to the code remain free and open
 
-Source code can be downloaded from `GitHub <https://github.com/IIT-EnergySystemModels/openSDUC>`_.
+Source code can be downloaded from `GitHub <https://github.com/IIT-EnergySystemModels/openSDUC>`_  or installed with `pip <https://pypi.org/project/openSDUC/>`_
 
 This model is a work in progress and will be updated accordingly. If you want to subscribe to the **openSDUC** model updates send an email to andres.ramos@comillas.edu
