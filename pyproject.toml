@@ -12,15 +12,15 @@ classifiers = [
   "Development Status :: 5 - Production/Stable","Intended Audience :: Science/Research",
   "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
   "Operating System :: OS Independent",
-  "Programming Language :: Python :: 3.11",]
+  "Programming Language :: Python :: 3.13",]
 requires-python = ">=3.11"
 description-file = "README.rst"
 requires = [
-  "pyomo>=5.7.3",
-  "matplotlib>=3.3.4",
-  "numpy>=1.20.1",
-  "pandas>=1.2.3",
-  "psutil>=5.8.0"]
+  "matplotlib>=3.10.0",
+  "pandas>=2.2.2",
+  "psutil>=5.9.5",
+  "pyomo>=6.9.5",
+  ]
 
 [tool.flit.scripts]
 openSDUC_Main = "openSDUC:main"
