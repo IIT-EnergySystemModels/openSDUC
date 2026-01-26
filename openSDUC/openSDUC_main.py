@@ -1136,8 +1136,8 @@ def openSDUC_run(DirName, CaseName, SolverName):
         #Solver.options['Method'       ] = 2                                             # barrier method
         Solver.options['MIPGap'        ] = 0.01
         Solver.options['Threads'       ] = int((psutil.cpu_count(logical=True) + psutil.cpu_count(logical=False))/2)
-        Solver.options['TimeLimit'     ] =    7200
-        Solver.options['IterationLimit'] = 7200000
+        Solver.options['TimeLimit'     ] =    3600
+        Solver.options['IterationLimit'] = 3600000
     if SolverName == 'appsi_highs':
         Solver.options['log_file'               ] = f'{_path}/openSDUC_highs_{CaseName}.log'
         Solver.options['solver'                 ] = 'simplex'
