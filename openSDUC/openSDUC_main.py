@@ -700,7 +700,7 @@ parser.add_argument('--solver', type=str, default=None)
 
 DIR    = os.path.dirname(__file__)
 CASE   = '16g'
-SOLVER = 'gurobi' # 'appsi_highs', 'gurobi'
+SOLVER = 'appsi_highs' # 'appsi_highs', 'gurobi'
 
 def main():
     args = parser.parse_args()
