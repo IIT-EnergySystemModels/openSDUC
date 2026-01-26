@@ -660,7 +660,7 @@
 # For more information on this, and how to apply and follow the GNU AGPL, see
 # <https://www.gnu.org/licenses/>.
 
-# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.34 - January 19, 2026
+# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.34 - January 23, 2026
 # simplicity and transparency in power systems planning
 
 # Developed by
@@ -700,7 +700,7 @@ parser.add_argument('--solver', type=str, default=None)
 
 DIR    = os.path.dirname(__file__)
 CASE   = '16g'
-SOLVER = 'appsi_highs'
+SOLVER = 'gurobi' # 'appsi_highs', 'gurobi'
 
 def main():
     args = parser.parse_args()
@@ -734,7 +734,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime = time.time()
 
     #%% model declaration
-    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.34 - January 19, 2026')
+    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.34 - January 23, 2026')
 
     #%% reading the sets
     dictSets = DataPortal()
@@ -1000,7 +1000,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     mSDUC.eTotalVCost = Constraint(rule=eTotalVCost, doc='total system variable cost [MEUR]')
 
     def eTotalECost(mSDUC):
-        return mSDUC.vTotalECost == sum(pScenProb[sc] * pCO2Cost * pCO2EmissionRate[nr] * mSDUC.vTotalOutput[sc,n,nr] for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.nr)
+        return mSDUC.vTotalECost == pCO2Cost * sum(pScenProb[sc] * pCO2EmissionRate[nr] * mSDUC.vTotalOutput[sc,n,nr] for sc,n,nr in mSDUC.sc*mSDUC.n*mSDUC.nr)
     mSDUC.eTotalECost = Constraint(rule=eTotalECost, doc='total system emission cost [MEUR]')
 
     def eTotalTCost(mSDUC):
@@ -1034,9 +1034,11 @@ def openSDUC_run(DirName, CaseName, SolverName):
     mSDUC.eBalance = Constraint(mSDUC.sc*mSDUC.n, rule=eBalance, doc='load generation balance [GW]')
 
     def eESSInventory(mSDUC,sc,n,es):
-        if   pScenProb[sc] and mSDUC.n.ord(n) == pCycleTimeStep[es]:
+        if pScenProb[sc] == 0.0:
+            return Constraint.Skip
+        if   mSDUC.n.ord(n) == pCycleTimeStep[es]:
             return pInitialInventory[es]                                         + sum(pDuration[n2]*(pEnergyInflows[es][sc,n2] - mSDUC.vTotalOutput[sc,n2,es] + pEfficiency[es]*mSDUC.vESSCharge[sc,n2,es]) for n2 in list(mSDUC.n2)[mSDUC.n.ord(n)-pCycleTimeStep[es]:mSDUC.n.ord(n)]) == mSDUC.vESSInventory[sc,n,es] + mSDUC.vESSSpillage[sc,n,es]
-        elif pScenProb[sc] and mSDUC.n.ord(n) >  pCycleTimeStep[es] and mSDUC.n.ord(n) % pCycleTimeStep[es] == 0:
+        elif mSDUC.n.ord(n) >  pCycleTimeStep[es] and mSDUC.n.ord(n) % pCycleTimeStep[es] == 0:
             return mSDUC.vESSInventory[sc,mSDUC.n.prev(n,pCycleTimeStep[es]),es] + sum(pDuration[n2]*(pEnergyInflows[es][sc,n2] - mSDUC.vTotalOutput[sc,n2,es] + pEfficiency[es]*mSDUC.vESSCharge[sc,n2,es]) for n2 in list(mSDUC.n2)[mSDUC.n.ord(n)-pCycleTimeStep[es]:mSDUC.n.ord(n)]) == mSDUC.vESSInventory[sc,n,es] + mSDUC.vESSSpillage[sc,n,es]
         else:
             return Constraint.Skip
@@ -1048,30 +1050,32 @@ def openSDUC_run(DirName, CaseName, SolverName):
 
     #%%
     def eMaxOutput2ndBlock(mSDUC,sc,n,nr):
-        if   pScenProb[sc] and pOperReserveUp[sc,n] and pMaxPower2ndBlock[nr][sc,n]:
-            return (mSDUC.vOutput2ndBlock[sc,n,nr] + mSDUC.vReserveUp  [sc,n,nr]) / pMaxPower2ndBlock[nr][sc,n] <= mSDUC.vCommitment[n,nr]
-        else:
+        if pScenProb[sc] == 0.0 or pMaxPower2ndBlock[nr][sc,n] == 0.0:
             return Constraint.Skip
+        if   pOperReserveUp[sc,n]:
+            return (mSDUC.vOutput2ndBlock[sc,n,nr] + mSDUC.vReserveUp  [sc,n,nr]) / pMaxPower2ndBlock[nr][sc,n] <= mSDUC.vCommitment[n,nr]
+        elif pOperReserveUp[sc,n] == 0.0:
+            return (mSDUC.vOutput2ndBlock[sc,n,nr]                              ) / pMaxPower2ndBlock[nr][sc,n] <= mSDUC.vCommitment[n,nr]
     mSDUC.eMaxOutput2ndBlock = Constraint(mSDUC.sc*mSDUC.n*mSDUC.nr, rule=eMaxOutput2ndBlock, doc='max output of the second block of a committed unit [p.u.]')
 
     def eMinOutput2ndBlock(mSDUC,sc,n,nr):
-        if   pScenProb[sc] and pOperReserveDw[sc,n] and pMaxPower2ndBlock[nr][sc,n]:
-            return (mSDUC.vOutput2ndBlock[sc,n,nr] + mSDUC.vReserveDown[sc,n,nr]) / pMaxPower2ndBlock[nr][sc,n] >= 0.0
-        else:
+        if pScenProb[sc] == 0.0 or pMaxPower2ndBlock[nr][sc,n] == 0.0 or pOperReserveDw[sc,n] == 0.0:
             return Constraint.Skip
+        if pOperReserveDw[sc,n]:
+            return (mSDUC.vOutput2ndBlock[sc,n,nr] + mSDUC.vReserveDown[sc,n,nr]) / pMaxPower2ndBlock[nr][sc,n] >= 0.0
     mSDUC.eMinOutput2ndBlock = Constraint(mSDUC.sc*mSDUC.n*mSDUC.nr, rule=eMinOutput2ndBlock, doc='min output of the second block of a committed unit [p.u.]')
 
     def eTotalOutput(mSDUC,sc,n,nr):
-        if   pScenProb[sc] and pMinPower[nr][sc,n] == 0.0:
-            return mSDUC.vTotalOutput[sc,n,nr]                       ==                           mSDUC.vOutput2ndBlock[sc,n,nr]
-        elif pScenProb[sc]:
-            return mSDUC.vTotalOutput[sc,n,nr] / pMinPower[nr][sc,n] == mSDUC.vCommitment[n,nr] + mSDUC.vOutput2ndBlock[sc,n,nr] / pMinPower[nr][sc,n]
-        else:
+        if pScenProb[sc] == 0.0:
             return Constraint.Skip
+        if pMinPower[nr][sc,n] == 0.0:
+            return mSDUC.vTotalOutput[sc,n,nr]                       ==                           mSDUC.vOutput2ndBlock[sc,n,nr]
+        else:
+            return mSDUC.vTotalOutput[sc,n,nr] / pMinPower[nr][sc,n] == mSDUC.vCommitment[n,nr] + mSDUC.vOutput2ndBlock[sc,n,nr] / pMinPower[nr][sc,n]
     mSDUC.eTotalOutput = Constraint(mSDUC.sc*mSDUC.n*mSDUC.nr, rule=eTotalOutput, doc='total output of a unit [GW]')
 
     def eUCStrShut(mSDUC,n,nr):
-        if   n == mSDUC.n.first():
+        if n == mSDUC.n.first():
             return mSDUC.vCommitment[n,nr] - pInitialUC[nr]                        == mSDUC.vStartUp[n,nr] - mSDUC.vShutDown[n,nr]
         else:
             return mSDUC.vCommitment[n,nr] - mSDUC.vCommitment[mSDUC.n.prev(n),nr] == mSDUC.vStartUp[n,nr] - mSDUC.vShutDown[n,nr]
@@ -1083,21 +1087,21 @@ def openSDUC_run(DirName, CaseName, SolverName):
 
     #%%
     def eRampUp(mSDUC,sc,n,t):
-        if   pScenProb[sc] and pRampUp[t] and pRampUp[t] < pMaxPower2ndBlock[t][sc,n] and n == mSDUC.n.first():
-            return (mSDUC.vOutput2ndBlock[sc,n,t] - max(pInitialOutput[t]-pMinPower[t][sc,n],0.0) + mSDUC.vReserveUp  [sc,n,t]) / pDuration[n] / pRampUp[t] <= mSDUC.vCommitment[n,t] - mSDUC.vStartUp[n,t]
-        elif pScenProb[sc] and pRampUp[t] and pRampUp[t] < pMaxPower2ndBlock[t][sc,n]:
-            return (mSDUC.vOutput2ndBlock[sc,n,t] - mSDUC.vOutput2ndBlock[sc,mSDUC.n.prev(n),t]   + mSDUC.vReserveUp  [sc,n,t]) / pDuration[n] / pRampUp[t] <= mSDUC.vCommitment[n,t] - mSDUC.vStartUp[n,t]
-        else:
+        if pScenProb[sc] == 0.0 or pRampUp[t] == 0.0 or pRampUp[t] >= pMaxPower2ndBlock[t][sc,n]:
             return Constraint.Skip
+        if n == mSDUC.n.first():
+            return (mSDUC.vOutput2ndBlock[sc,n,t] - max(pInitialOutput[t]-pMinPower[t][sc,n],0.0) + mSDUC.vReserveUp  [sc,n,t]) / pDuration[n] / pRampUp[t] <= mSDUC.vCommitment[n,t] - mSDUC.vStartUp[n,t]
+        else:
+            return (mSDUC.vOutput2ndBlock[sc,n,t] - mSDUC.vOutput2ndBlock[sc,mSDUC.n.prev(n),t]   + mSDUC.vReserveUp  [sc,n,t]) / pDuration[n] / pRampUp[t] <= mSDUC.vCommitment[n,t] - mSDUC.vStartUp[n,t]
     mSDUC.eRampUp = Constraint(mSDUC.sc*mSDUC.n*mSDUC.t, rule=eRampUp, doc='maximum ramp up   [p.u.]')
 
     def eRampDw(mSDUC,sc,n,t):
-        if   pScenProb[sc] and pRampDw[t] and pRampDw[t] < pMaxPower2ndBlock[t][sc,n] and n == mSDUC.n.first():
-            return (mSDUC.vOutput2ndBlock[sc,n,t] - max(pInitialOutput[t]-pMinPower[t][sc,n],0.0) - mSDUC.vReserveDown[sc,n,t]) / pDuration[n] / pRampDw[t] >= - pInitialUC[t]                        + mSDUC.vShutDown[n,t]
-        elif pScenProb[sc] and pRampDw[t] and pRampDw[t] < pMaxPower2ndBlock[t][sc,n]:
-            return (mSDUC.vOutput2ndBlock[sc,n,t] - mSDUC.vOutput2ndBlock[sc,mSDUC.n.prev(n),t]   - mSDUC.vReserveDown[sc,n,t]) / pDuration[n] / pRampDw[t] >= - mSDUC.vCommitment[mSDUC.n.prev(n),t] + mSDUC.vShutDown[n,t]
-        else:
+        if pScenProb[sc] == 0.0 or pRampDw[t] == 0.0 or pRampDw[t] >= pMaxPower2ndBlock[t][sc,n]:
             return Constraint.Skip
+        if n == mSDUC.n.first():
+            return (mSDUC.vOutput2ndBlock[sc,n,t] - max(pInitialOutput[t]-pMinPower[t][sc,n],0.0) - mSDUC.vReserveDown[sc,n,t]) / pDuration[n] / pRampDw[t] >= - pInitialUC[t]                        + mSDUC.vShutDown[n,t]
+        else:
+            return (mSDUC.vOutput2ndBlock[sc,n,t] - mSDUC.vOutput2ndBlock[sc,mSDUC.n.prev(n),t]   - mSDUC.vReserveDown[sc,n,t]) / pDuration[n] / pRampDw[t] >= - mSDUC.vCommitment[mSDUC.n.prev(n),t] + mSDUC.vShutDown[n,t]
     mSDUC.eRampDw = Constraint(mSDUC.sc*mSDUC.n*mSDUC.t, rule=eRampDw, doc='maximum ramp down [p.u.]')
 
     GeneratingRampsTime = time.time() - StartTime
@@ -1154,9 +1158,9 @@ def openSDUC_run(DirName, CaseName, SolverName):
         mSDUC.vCommitment[n,nr].fix(round(mSDUC.vCommitment[n,nr]()))
         mSDUC.vStartUp   [n,nr].fix(round(mSDUC.vStartUp   [n,nr]()))
         mSDUC.vShutDown  [n,nr].fix(round(mSDUC.vShutDown  [n,nr]()))
-        mSDUC.vCommitment[n,nr].domain = UnitInterval  # change the domain to continuous
-        mSDUC.vStartUp   [n,nr].domain = UnitInterval  # change the domain to continuous
-        mSDUC.vShutDown  [n,nr].domain = UnitInterval  # change the domain to continuous
+        mSDUC.vCommitment[n,nr].domain = UnitInterval                  # change the domain to continuous
+        mSDUC.vStartUp   [n,nr].domain = UnitInterval                  # change the domain to continuous
+        mSDUC.vShutDown  [n,nr].domain = UnitInterval                  # change the domain to continuous
         nUnfixedVars += 1
 
     if nUnfixedVars > 0:
