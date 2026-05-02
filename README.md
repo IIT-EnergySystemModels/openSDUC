@@ -1,11 +1,11 @@
 
-[![openSDUC](https://pascua.iit.comillas.edu/aramos/openSDUC.jpg)](https://pascua.iit.comillas.edu/aramos/openSDUC.jpg)
+[![openSDUC](../img/openSDUC.jpg)](https://pascua.iit.comillas.edu/aramos/openSDUC.jpg)
 
-[![openSDUC](https://badge.fury.io/py/openSDUC.svg)](https://badge.fury.io/py/openSDUC)
-[![openSDUC](https://img.shields.io/pypi/pyversions/openSDUC.svg)](https://pypi.python.org/pypi/openSDUC)
-[![openSDUC](https://img.shields.io/readthedocs/opensduc)](https://opensduc.readthedocs.io/en/latest/index.html)
-[![openSDUC](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://github.com/IIT-EnergySystemModels/openSDUC/blob/master/LICENSE)
-[![openSDUC](https://static.pepy.tech/badge/openSDUC)](https://pepy.tech/project/openSDUC)
+[![PyPI](https://badge.fury.io/py/openSDUC.svg)](https://badge.fury.io/py/openSDUC)
+[![versions](https://img.shields.io/pypi/pyversions/openSDUC.svg)](https://pypi.python.org/pypi/openSDUC)
+[![docs](https://img.shields.io/readthedocs/opensduc)](https://opensduc.readthedocs.io/en/latest/index.html)
+[![AGPL](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://github.com/IIT-EnergySystemModels/openSDUC/blob/master/LICENSE)
+[![pepy](https://static.pepy.tech/badge/openSDUC)](https://pepy.tech/project/openSDUC)
 
 **Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC)**
 
