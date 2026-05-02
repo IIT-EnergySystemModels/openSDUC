@@ -1,3 +1,4 @@
+
 [![PyPI](https://pascua.iit.comillas.edu/aramos/openSDUC.jpg)](https://pascua.iit.comillas.edu/aramos/openSDUC/index.html)
 
 [![PyPI](https://badge.fury.io/py/openSDUC.svg)](https://badge.fury.io/py/openSDUC)
