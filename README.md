@@ -4,10 +4,7 @@
 :target: https://pascua.iit.comillas.edu/aramos/openSDUC/index.html
 ```
 
-```{image} https://badge.fury.io/py/openSDUC.svg
-:alt: PyPI
-:target: https://badge.fury.io/py/openSDUC
-```
+[![PyPI](https://badge.fury.io/py/openSDUC.svg)](https://badge.fury.io/py/openSDUC)
 
 ```{image} https://img.shields.io/pypi/pyversions/openSDUC.svg
 :alt: versions
