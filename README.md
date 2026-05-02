@@ -1,5 +1,6 @@
 
-![openSDUC](https://pascua.iit.comillas.edu/aramos/openSDUC.jpg)
+[![openSDUC](https://pascua.iit.comillas.edu/aramos/openSDUC.jpg)](https://pascua.iit.comillas.edu/aramos/openSDUC.jpg)
+
 [![openSDUC](https://badge.fury.io/py/openSDUC.svg)](https://badge.fury.io/py/openSDUC)
 [![openSDUC](https://img.shields.io/pypi/pyversions/openSDUC.svg)](https://pypi.python.org/pypi/openSDUC)
 [![openSDUC](https://img.shields.io/readthedocs/opensduc)](https://opensduc.readthedocs.io/en/latest/index.html)
