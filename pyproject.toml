@@ -14,12 +14,12 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3.13",]
 requires-python = ">=3.11"
-description-file = "README.rst"
+description-file = "README.md"
 requires = [
   "matplotlib>=3.10.0",
   "pandas>=2.2.2",
   "psutil>=5.9.5",
-  "pyomo>=6.9.5",
+  "pyomo>=6.10.0",
   ]
 
 [tool.flit.scripts]
