@@ -24,10 +24,10 @@ the [Universidad Pontificia Comillas](https://www.comillas.edu/en/).
 ```{toctree}
 :maxdepth: 2
 
-Introduction.rst
-InputData.rst
-OutputResults.rst
-MathematicalFormulation.rst
-Download.rst
-ContactUs.rst
+Introduction.md
+InputData.md
+OutputResults.md
+MathematicalFormulation.md
+Download.md
+ContactUs.md
 ```
