@@ -9,14 +9,14 @@ Here we present the mathematical formulation of the optimization problem solved 
 ## Indices
 
 ```{eval-rst}
-===========  ========================================================
-:math:`ω`    Scenario
-:math:`n`    Load level
-:math:`\nu`  Time step. Duration of each load level (e.g., 2 h, 3 h)
-:math:`g`    Generator (thermal or hydro unit or ESS)
-:math:`t`    Thermal unit
-:math:`e`    Energy Storage System (ESS)
-===========  ========================================================
+==============  ========================================================
+:math:`\omega`  Scenario
+:math:`n`       Load level
+:math:`\nu`     Time step. Duration of each load level (e.g., 2 h, 3 h)
+:math:`g`       Generator (thermal or hydro unit or ESS)
+:math:`t`       Thermal unit
+:math:`e`       Energy Storage System (ESS)
+==============  ========================================================
 ```
 
 ## Parameters
@@ -24,29 +24,29 @@ Here we present the mathematical formulation of the optimization problem solved 
 They are written in capital letters.
 
 ```{eval-rst}
-==============  ====================================================  =======
+==================  ====================================================  =======
 **Demand**
---------------  ----------------------------------------------------  -------
-:math:`D_n^ω`   Demand                                                GW
-:math:`DUR_n`   Duration of each load level                           h
-:math:`CENS`    Cost of energy not served. Value of Lost Load (VoLL)  €/MWh
-==============  ====================================================  =======
+------------------  ----------------------------------------------------  -------
+:math:`D_n^\omega`  Demand                                                GW
+:math:`DUR_n`       Duration of each load level                           h
+:math:`CENS`        Cost of energy not served. Value of Lost Load (VoLL)  €/MWh
+==================  ====================================================  =======
 ```
 
 ```{eval-rst}
-==============  =============================  ====
+=================  =============================  ====
 **Scenarios**
---------------  -----------------------------  ----
-:math:`P^ω`     Probability of each scenario   p.u.
-==============  =============================  ====
+-----------------  -----------------------------  ----
+:math:`P^\omega`   Probability of each scenario   p.u.
+=================  =============================  ====
 ```
 
 ```{eval-rst}
-===========================  ======================================  ==
+================================  ======================================  ==
 **Operating reserves**
----------------------------  --------------------------------------  --
-:math:`UR_n^ω, DR_n^ω`       Upward and downward operating reserves  GW
-===========================  ======================================  ==
+--------------------------------  --------------------------------------  --
+:math:`UR_n^\omega, DR_n^\omega`  Upward and downward operating reserves  GW
+================================  ======================================  ==
 ```
 
 ```{eval-rst}
@@ -62,7 +62,7 @@ They are written in capital letters.
 :math:`\tau_e`                             Characteristic duration of the ESS (e.g., 24 h, 168 h, 672 h -for monthly-)                              h
 :math:`EF_e`                               Round-trip efficiency of the pump/turbine cycle of a hydro power plant or charge/discharge of a battery  p.u.
 :math:`I_e`                                Capacity of an ESS (e.g., hydro power plant)                                                             GWh
-:math:`EI_{ne}^ω`                          Energy inflows of an ESS (e.g., hydro power plant)                                                       GWh
+:math:`EI_{ne}^\omega`                     Energy inflows of an ESS (e.g., hydro power plant)                                                       GWh
 =========================================  =======================================================================================================  ===========
 ```
 
@@ -71,24 +71,24 @@ They are written in capital letters.
 They are written in lower letters.
 
 ```{eval-rst}
-===============  ==================  ===
+====================  ==================  ===
 **Demand**
----------------  ------------------  ---
-:math:`ens_n^ω`  Energy not served   GW
-===============  ==================  ===
+--------------------  ------------------  ---
+:math:`ens_n^\omega`  Energy not served   GW
+====================  ==================  ===
 ```
 
 ```{eval-rst}
-=================================  ==========================================================================  =====
+======================================  ==========================================================================  =====
 **Generation system**
----------------------------------  --------------------------------------------------------------------------  -----
-:math:`gp_{ng}^ω, gc_{ng}^ω`       Generator output (discharge if an ESS) and consumption (charge if an ESS)   GW
-:math:`p_{ng}^ω`                   Generator output of the second block (i.e., above the minimum load)         GW
-:math:`ur_{ng}^ω, dr_{ng}^ω`       Upward and downward operating reserves of a committed unit                  GW
-:math:`i_{ne}^ω`                   ESS stored energy (inventory)                                               GWh
-:math:`s_{ne}^ω`                   ESS spilled energy                                                          GWh
-:math:`uc_{nt}, su_{nt}, sd_{nt}`  Commitment, startup and shutdown of generation unit per load level          {0,1}
-=================================  ==========================================================================  =====
+--------------------------------------  --------------------------------------------------------------------------  -----
+:math:`gp_{ng}^\omega, gc_{ng}^\omega`  Generator output (discharge if an ESS) and consumption (charge if an ESS)   GW
+:math:`p_{ng}^\omega`                   Generator output of the second block (i.e., above the minimum load)         GW
+:math:`ur_{ng}^\omega, dr_{ng}^\omega`  Upward and downward operating reserves of a committed unit                  GW
+:math:`i_{ne}^\omega`                   ESS stored energy (inventory)                                               GWh
+:math:`s_{ne}^\omega`                   ESS spilled energy                                                          GWh
+:math:`uc_{nt}, su_{nt}, sd_{nt}`       Commitment, startup and shutdown of generation unit per load level          {0,1}
+======================================  ==========================================================================  =====
 ```
 
 ## Equations
@@ -106,17 +106,17 @@ Generation operation cost [M€] («`eTotalTCost`», «`eTotalVCost`», «`eTota
 Balance of generation and demand [GW] («`eBalance`»)
 
 ```{math}
-\sum_{g} gp_{ng}^ω - \sum_{g} gc_{ng}^ω + ens_n^ω = D_n^ω \quad \forall ωn
+\sum_{g} gp_{ng}^\omega - \sum_{g} gc_{ng}^\omega + ens_n^\omega = D_n^\omega \quad \forall ωn
 ```
 
 Upward and downward operating reserves [GW] («`eOperReserveUp`», `eOperReserveDw`»)
 
 ```{math}
-\sum_g ur_{ng}^ω \geq UR_n^ω \quad \forall ωn
+\sum_g ur_{ng}^\omega \geq UR_n^\omega \quad \forall ωn
 ```
 
 ```{math}
-\sum_g dr_{ng}^ω \geq DR_n^ω \quad \forall ωn
+\sum_g dr_{ng}^\omega \geq DR_n^\omega \quad \forall ωn
 ```
 
 VRES units (i.e., those with linear variable cost equal to 0 and no storage capacity) do not contribute to the operating reserves.
@@ -124,7 +124,7 @@ VRES units (i.e., those with linear variable cost equal to 0 and no storage capa
 ESS energy inventory (only for load levels multiple of 24, 168, or 672 h, depending on the ESS type) [GWh] («`eESSInventory`»)
 
 ```{math}
-i_{n-\tau_e,e}^ω + \sum_{n' = n+\nu-\tau_e}^n DUR_n (EI_{ne}^ω - qp_{ne}^ω + EF_e gc_{ne}^ω) = i_{ne}^ω + s_{ne}^ω \quad \forall ωne
+i_{n-\tau_e,e}^\omega + \sum_{n' = n+\nu-\tau_e}^n DUR_n (EI_{ne}^\omega - qp_{ne}^\omega + EF_e gc_{ne}^\omega) = i_{ne}^\omega + s_{ne}^\omega \quad \forall ωne
 ```
 
 Maximum and minimum output of the second block of a committed unit (all except the VRES units) [p.u.] («`eMaxOutput2ndBlock`», `eMinOutput2ndBlock`»)
@@ -135,17 +135,17 @@ Maximum and minimum output of the second block of a committed unit (all except t
 - G. Morales-España, J.M. Latorre, and A. Ramos "Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem" IEEE Transactions on Power Systems 28 (4): 4897-4908, Nov 2013. [10.1109/TPWRS.2013.2251373](http://dx.doi.org/10.1109/TPWRS.2013.2251373)
 
 ```{math}
-\frac{p_{ng}^ω + ur_{ng}^ω}{\overline{GP}_g - \underline{GP}_g} \leq uc_{ng} \quad \forall ωng
+\frac{p_{ng}^\omega + ur_{ng}^\omega}{\overline{GP}_g - \underline{GP}_g} \leq uc_{ng} \quad \forall ωng
 ```
 
 ```{math}
-\frac{p_{ng}^ω - dr_{ng}^ω}{\overline{GP}_g - \underline{GP}_g} \geq 0       \quad \forall ωng
+\frac{p_{ng}^\omega - dr_{ng}^\omega}{\overline{GP}_g - \underline{GP}_g} \geq 0       \quad \forall ωng
 ```
 
 Total output of a committed unit (all except the VRES units) [GW] («`eTotalOutput`»)
 
 ```{math}
-\frac{qp_{ng}^ω}{\underline{GP}_g} = uc_{ng} + \frac{p_{ng}^ω}{\underline{GP}_g} \quad \forall ωng
+\frac{qp_{ng}^\omega}{\underline{GP}_g} = uc_{ng} + \frac{p_{ng}^\omega}{\underline{GP}_g} \quad \forall ωng
 ```
 
 Logical relation between commitment, startup, and shutdown status of a committed unit (all except the VRE units) [p.u.] («`eUCStrShut`»)
@@ -161,11 +161,11 @@ Maximum ramp up and ramp down for the second block of a thermal unit [p.u.] («`
 - 16. Damcı-Kurt, S. Küçükyavuz, D. Rajan, and A. Atamtürk, “A polyhedral study of production ramping,” Math. Program., vol. 158, no. 1–2, pp. 175–205, Jul. 2016. [10.1007/s10107-015-0919-9](https://doi.org/10.1007/s10107-015-0919-9)
 
 ```{math}
-\frac{p_{nt}^ω - p_{n-\nu,t}^ω + ur_{nt}^ω}{DUR_n RU_t} \leq   uc_{nt}      - su_{nt} \quad \forall ωnt
+\frac{p_{nt}^\omega - p_{n-\nu,t}^\omega + ur_{nt}^\omega}{DUR_n RU_t} \leq   uc_{nt}      - su_{nt} \quad \forall ωnt
 ```
 
 ```{math}
-\frac{p_{nt}^ω - p_{n-\nu,t}^ω - dr_{nt}^ω}{DUR_n RD_t} \geq - uc_{n-\nu,t} + sd_{nt} \quad \forall ωnt
+\frac{p_{nt}^\omega - p_{n-\nu,t}^\omega - dr_{nt}^\omega}{DUR_n RD_t} \geq - uc_{n-\nu,t} + sd_{nt} \quad \forall ωnt
 ```
 
 Minimum up time and down time of thermal unit [h] («`eMinUpTime`», `eMinDownTime`»)
@@ -183,33 +183,33 @@ Minimum up time and down time of thermal unit [h] («`eMinUpTime`», `eMinDownTi
 Bounds on generation variables [GW]
 
 ```{math}
-0 \leq qp_{ng}^ω \leq \overline{GP}_g                    \quad \forall ωng
+0 \leq qp_{ng}^\omega \leq \overline{GP}_g                    \quad \forall ωng
 ```
 
 ```{math}
-0 \leq qc_{ne}^ω \leq \overline{GC}_e                    \quad \forall ωne
+0 \leq qc_{ne}^\omega \leq \overline{GC}_e                    \quad \forall ωne
 ```
 
 ```{math}
-0 \leq ur_{ng}^ω \leq \overline{CP}_g - \underline{GP}_g \quad \forall ωng
+0 \leq ur_{ng}^\omega \leq \overline{CP}_g - \underline{GP}_g \quad \forall ωng
 ```
 
 ```{math}
-0 \leq dr_{ng}^ω \leq \overline{CP}_g - \underline{GP}_g \quad \forall ωng
+0 \leq dr_{ng}^\omega \leq \overline{CP}_g - \underline{GP}_g \quad \forall ωng
 ```
 
 ```{math}
-0 \leq  p_{ng}^ω \leq \overline{GP}_g - \underline{GP}_g \quad \forall ωng
+0 \leq  p_{ng}^\omega \leq \overline{GP}_g - \underline{GP}_g \quad \forall ωng
 ```
 
 ```{math}
-0 \leq i_{ne}^ω \leq I_e \quad \forall ωpe
+0 \leq i_{ne}^\omega \leq I_e \quad \forall ωpe
 ```
 
 ```{math}
-0 \leq s_{ne}^ω          \quad \forall ωne
+0 \leq s_{ne}^\omega          \quad \forall ωne
 ```
 
 ```{math}
-0 \leq ens_n^ω \leq D_n^ω \quad \forall ωn
+0 \leq ens_n^\omega \leq D_n^\omega \quad \forall ωn
 ```
