@@ -95,27 +95,37 @@ They are written in lower letters.
 
 **Objective function**: minimization of operation cost for the scope of the model
 
-Generation operation cost [M€] («`eTotalTCost`», `eTotalVCost`», `eTotalECost`»)
+Generation operation cost [M€] («`eTotalTCost`», «`eTotalVCost`», «`eTotalECost`»)
 
-$\sum_{ωn}{P^ω DUR_n (\sum_g {CV_g gp_{ng}^ω} + CENS ens_n^ω)} + \sum_{ng}{(DUR_n CF_g uc_{ng} + CSU_g su_{ng} + CSD_g sd_{ng})}$
+```{math}
+\sum_{\omega n}{P^\omega DUR_n \left(\sum_g {CV_g gp_{ng}^\omega} + CENS\, ens_n^\omega\right)} + \sum_{ng}{\left(DUR_n CF_g uc_{ng} + CSU_g su_{ng} + CSD_g sd_{ng}\right)}
+```
 
 **Constraints**
 
 Balance of generation and demand [GW] («`eBalance`»)
 
-$\sum_{g} gp_{ng}^ω - \sum_{g} gc_{ng}^ω + ens_n^ω = D_n^ω \quad \forall ωn$
+```{math}
+\sum_{g} gp_{ng}^ω - \sum_{g} gc_{ng}^ω + ens_n^ω = D_n^ω \quad \forall ωn
+```
 
 Upward and downward operating reserves [GW] («`eOperReserveUp`», `eOperReserveDw`»)
 
-$\sum_g ur_{ng}^ω \geq UR_n^ω \quad \forall ωn$
+```{math}
+\sum_g ur_{ng}^ω \geq UR_n^ω \quad \forall ωn
+```
 
-$\sum_g dr_{ng}^ω \geq DR_n^ω \quad \forall ωn$
+```{math}
+\sum_g dr_{ng}^ω \geq DR_n^ω \quad \forall ωn
+```
 
 VRES units (i.e., those with linear variable cost equal to 0 and no storage capacity) do not contribute to the operating reserves.
 
 ESS energy inventory (only for load levels multiple of 24, 168, or 672 h, depending on the ESS type) [GWh] («`eESSInventory`»)
 
-$i_{n-\tau_e,e}^ω + \sum_{n' = n+\nu-\tau_e}^n DUR_n (EI_{ne}^ω - qp_{ne}^ω + EF_e gc_{ne}^ω) = i_{ne}^ω + s_{ne}^ω \quad \forall ωne$
+```{math}
+i_{n-\tau_e,e}^ω + \sum_{n' = n+\nu-\tau_e}^n DUR_n (EI_{ne}^ω - qp_{ne}^ω + EF_e gc_{ne}^ω) = i_{ne}^ω + s_{ne}^ω \quad \forall ωne
+```
 
 Maximum and minimum output of the second block of a committed unit (all except the VRES units) [p.u.] («`eMaxOutput2ndBlock`», `eMinOutput2ndBlock`»)
 
@@ -124,17 +134,25 @@ Maximum and minimum output of the second block of a committed unit (all except t
 - G. Morales-España, A. Ramos, and J. Garcia-Gonzalez "An MIP Formulation for Joint Market-Clearing of Energy and Reserves Based on Ramp Scheduling" IEEE Transactions on Power Systems 29 (1): 476-488, Jan 2014. [10.1109/TPWRS.2013.2259601](http://dx.doi.org/10.1109/TPWRS.2013.2259601)
 - G. Morales-España, J.M. Latorre, and A. Ramos "Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem" IEEE Transactions on Power Systems 28 (4): 4897-4908, Nov 2013. [10.1109/TPWRS.2013.2251373](http://dx.doi.org/10.1109/TPWRS.2013.2251373)
 
-$\frac{p_{ng}^ω + ur_{ng}^ω}{\overline{GP}_g - \underline{GP}_g} \leq uc_{ng} \quad \forall ωng$
+```{math}
+\frac{p_{ng}^ω + ur_{ng}^ω}{\overline{GP}_g - \underline{GP}_g} \leq uc_{ng} \quad \forall ωng
+```
 
-$\frac{p_{ng}^ω - dr_{ng}^ω}{\overline{GP}_g - \underline{GP}_g} \geq 0       \quad \forall ωng$
+```{math}
+\frac{p_{ng}^ω - dr_{ng}^ω}{\overline{GP}_g - \underline{GP}_g} \geq 0       \quad \forall ωng
+```
 
 Total output of a committed unit (all except the VRES units) [GW] («`eTotalOutput`»)
 
-$\frac{qp_{ng}^ω}{\underline{GP}_g} = uc_{ng} + \frac{p_{ng}^ω}{\underline{GP}_g} \quad \forall ωng$
+```{math}
+\frac{qp_{ng}^ω}{\underline{GP}_g} = uc_{ng} + \frac{p_{ng}^ω}{\underline{GP}_g} \quad \forall ωng
+```
 
 Logical relation between commitment, startup, and shutdown status of a committed unit (all except the VRE units) [p.u.] («`eUCStrShut`»)
 
-$uc_{ng} - uc_{n-\nu,g} = su_{ng} - sd_{ng} \quad \forall ng$
+```{math}
+uc_{ng} - uc_{n-\nu,g} = su_{ng} - sd_{ng} \quad \forall ng
+```
 
 Initial commitment of the units is determined by the model based on the merit order loading, including the VRES and ESS units.
 
@@ -142,32 +160,56 @@ Maximum ramp up and ramp down for the second block of a thermal unit [p.u.] («`
 
 - 16. Damcı-Kurt, S. Küçükyavuz, D. Rajan, and A. Atamtürk, “A polyhedral study of production ramping,” Math. Program., vol. 158, no. 1–2, pp. 175–205, Jul. 2016. [10.1007/s10107-015-0919-9](https://doi.org/10.1007/s10107-015-0919-9)
 
-$\frac{p_{nt}^ω - p_{n-\nu,t}^ω + ur_{nt}^ω}{DUR_n RU_t} \leq   uc_{nt}      - su_{nt} \quad \forall ωnt$
+```{math}
+\frac{p_{nt}^ω - p_{n-\nu,t}^ω + ur_{nt}^ω}{DUR_n RU_t} \leq   uc_{nt}      - su_{nt} \quad \forall ωnt
+```
 
-$\frac{p_{nt}^ω - p_{n-\nu,t}^ω - dr_{nt}^ω}{DUR_n RD_t} \geq - uc_{n-\nu,t} + sd_{nt} \quad \forall ωnt$
+```{math}
+\frac{p_{nt}^ω - p_{n-\nu,t}^ω - dr_{nt}^ω}{DUR_n RD_t} \geq - uc_{n-\nu,t} + sd_{nt} \quad \forall ωnt
+```
 
 Minimum up time and down time of thermal unit [h] («`eMinUpTime`», `eMinDownTime`»)
 
 - 4. Rajan and S. Takriti, “Minimum up/down polytopes of the unit commitment problem with start-up costs,” IBM, New York, Technical Report RC23628, 2005. <https://pdfs.semanticscholar.org/b886/42e36b414d5929fed48593d0ac46ae3e2070.pdf>
 
-$\sum_{n'=n+\nu-TU_t}^n su_{n't} \leq     uc_{nt} \quad \forall nt$
+```{math}
+\sum_{n'=n+\nu-TU_t}^n su_{n't} \leq     uc_{nt} \quad \forall nt
+```
 
-$\sum_{n'=n+\nu-TD_t}^n sd_{n't} \leq 1 - uc_{nt} \quad \forall nt$
+```{math}
+\sum_{n'=n+\nu-TD_t}^n sd_{n't} \leq 1 - uc_{nt} \quad \forall nt
+```
 
 Bounds on generation variables [GW]
 
-$0 \leq qp_{ng}^ω \leq \overline{GP}_g                    \quad \forall ωng$
+```{math}
+0 \leq qp_{ng}^ω \leq \overline{GP}_g                    \quad \forall ωng
+```
 
-$0 \leq qc_{ne}^ω \leq \overline{GC}_e                    \quad \forall ωne$
+```{math}
+0 \leq qc_{ne}^ω \leq \overline{GC}_e                    \quad \forall ωne
+```
 
-$0 \leq ur_{ng}^ω \leq \overline{CP}_g - \underline{GP}_g \quad \forall ωng$
+```{math}
+0 \leq ur_{ng}^ω \leq \overline{CP}_g - \underline{GP}_g \quad \forall ωng
+```
 
-$0 \leq dr_{ng}^ω \leq \overline{CP}_g - \underline{GP}_g \quad \forall ωng$
+```{math}
+0 \leq dr_{ng}^ω \leq \overline{CP}_g - \underline{GP}_g \quad \forall ωng
+```
 
-$0 \leq  p_{ng}^ω \leq \overline{GP}_g - \underline{GP}_g \quad \forall ωng$
+```{math}
+0 \leq  p_{ng}^ω \leq \overline{GP}_g - \underline{GP}_g \quad \forall ωng
+```
 
-$0 \leq i_{ne}^ω \leq I_e \quad \forall ωpe$
+```{math}
+0 \leq i_{ne}^ω \leq I_e \quad \forall ωpe
+```
 
-$0 \leq s_{ne}^ω          \quad \forall ωne$
+```{math}
+0 \leq s_{ne}^ω          \quad \forall ωne
+```
 
-$0 \leq ens_n^ω \leq D_n^ω \quad \forall ωn$
+```{math}
+0 \leq ens_n^ω \leq D_n^ω \quad \forall ωn
+```
