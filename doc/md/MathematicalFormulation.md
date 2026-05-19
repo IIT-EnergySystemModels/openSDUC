@@ -120,9 +120,9 @@ $i_{n-\tau_e,e}^ω + \sum_{n' = n+\nu-\tau_e}^n DUR_n (EI_{ne}^ω - qp_{ne}^ω +
 Maximum and minimum output of the second block of a committed unit (all except the VRES units) [p.u.] («`eMaxOutput2ndBlock`», `eMinOutput2ndBlock`»)
 
 - D.A. Tejada-Arango, S. Lumbreras, P. Sánchez-Martín, and A. Ramos "Which Unit-Commitment Formulation is Best? A Systematic Comparison" IEEE Transactions on Power Systems 35 (4):2926-2936 Jul 2020 [10.1109/TPWRS.2019.2962024](https://doi.org/10.1109/TPWRS.2019.2962024)
-- 3. Gentile, G. Morales-España, and A. Ramos "A tight MIP formulation of the unit commitment problem with start-up and shut-down constraints" EURO Journal on Computational Optimization 5 (1), 177-201 Mar 2017. [10.1007/s13675-016-0066-y](http://dx.doi.org/10.1007/s13675-016-0066-y)
-- 7. Morales-España, A. Ramos, and J. Garcia-Gonzalez "An MIP Formulation for Joint Market-Clearing of Energy and Reserves Based on Ramp Scheduling" IEEE Transactions on Power Systems 29 (1): 476-488, Jan 2014. [10.1109/TPWRS.2013.2259601](http://dx.doi.org/10.1109/TPWRS.2013.2259601)
-- 7. Morales-España, J.M. Latorre, and A. Ramos "Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem" IEEE Transactions on Power Systems 28 (4): 4897-4908, Nov 2013. [10.1109/TPWRS.2013.2251373](http://dx.doi.org/10.1109/TPWRS.2013.2251373)
+- C. Gentile, G. Morales-España, and A. Ramos "A tight MIP formulation of the unit commitment problem with start-up and shut-down constraints" EURO Journal on Computational Optimization 5 (1), 177-201 Mar 2017. [10.1007/s13675-016-0066-y](http://dx.doi.org/10.1007/s13675-016-0066-y)
+- G. Morales-España, A. Ramos, and J. Garcia-Gonzalez "An MIP Formulation for Joint Market-Clearing of Energy and Reserves Based on Ramp Scheduling" IEEE Transactions on Power Systems 29 (1): 476-488, Jan 2014. [10.1109/TPWRS.2013.2259601](http://dx.doi.org/10.1109/TPWRS.2013.2259601)
+- G. Morales-España, J.M. Latorre, and A. Ramos "Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem" IEEE Transactions on Power Systems 28 (4): 4897-4908, Nov 2013. [10.1109/TPWRS.2013.2251373](http://dx.doi.org/10.1109/TPWRS.2013.2251373)
 
 $\frac{p_{ng}^ω + ur_{ng}^ω}{\overline{GP}_g - \underline{GP}_g} \leq uc_{ng} \quad \forall ωng$
 
