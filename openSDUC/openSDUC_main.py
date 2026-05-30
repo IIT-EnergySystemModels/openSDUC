@@ -878,8 +878,8 @@ def openSDUC_run(DirName, CaseName, SolverName):
     # variable minimum and maximum power
     pVariableMinPower = pVariableMinPower.replace(0.0, float('nan'))
     pVariableMaxPower = pVariableMaxPower.replace(0.0, float('nan'))
-    pMinPower         = pd.DataFrame([pRatedMinPower]*len(pVariableMaxPower.index), index=pd.Index(pVariableMaxPower.index), columns=pRatedMinPower.index)
-    pMaxPower         = pd.DataFrame([pRatedMaxPower]*len(pVariableMaxPower.index), index=pd.Index(pVariableMaxPower.index), columns=pRatedMaxPower.index)
+    pMinPower         = pd.DataFrame([pRatedMinPower]*len(pVariableMaxPower.index), index=pVariableMaxPower.index, columns=pRatedMinPower.index)
+    pMaxPower         = pd.DataFrame([pRatedMaxPower]*len(pVariableMaxPower.index), index=pVariableMaxPower.index, columns=pRatedMaxPower.index)
     pMinPower         = pMinPower.reindex        (sorted(pMinPower.columns        ), axis=1)
     pMaxPower         = pMaxPower.reindex        (sorted(pMaxPower.columns        ), axis=1)
     pVariableMinPower = pVariableMinPower.reindex(sorted(pVariableMinPower.columns), axis=1)
@@ -891,8 +891,8 @@ def openSDUC_run(DirName, CaseName, SolverName):
     # variable minimum and maximum storage capacity
     pVariableMinStorage = pVariableMinStorage.replace(0.0, float('nan'))
     pVariableMaxStorage = pVariableMaxStorage.replace(0.0, float('nan'))
-    pMinStorage         = pd.DataFrame([pRatedMinStorage]*len(pVariableMinStorage.index), index=pd.Index(pVariableMinStorage.index), columns=pRatedMinStorage.index)
-    pMaxStorage         = pd.DataFrame([pRatedMaxStorage]*len(pVariableMaxStorage.index), index=pd.Index(pVariableMaxStorage.index), columns=pRatedMaxStorage.index)
+    pMinStorage         = pd.DataFrame([pRatedMinStorage]*len(pVariableMinStorage.index), index=pVariableMinStorage.index, columns=pRatedMinStorage.index)
+    pMaxStorage         = pd.DataFrame([pRatedMaxStorage]*len(pVariableMaxStorage.index), index=pVariableMaxStorage.index, columns=pRatedMaxStorage.index)
     pMinStorage         = pMinStorage.reindex        (sorted(pMinStorage.columns        ), axis=1)
     pMaxStorage         = pMaxStorage.reindex        (sorted(pMaxStorage.columns        ), axis=1)
     pVariableMinStorage = pVariableMinStorage.reindex(sorted(pVariableMinStorage.columns), axis=1)
@@ -1183,11 +1183,11 @@ def openSDUC_run(DirName, CaseName, SolverName):
 
     #%% outputting the generation operation
 
-    OutputResults = pd.Series(data=[mSDUC.vCommitment[n,nr]() for n,nr in mSDUC.n*mSDUC.nr], index=pd.Index(mSDUC.n*mSDUC.nr))
+    OutputResults = pd.Series(data=[mSDUC.vCommitment[n,nr]() for n,nr in mSDUC.n*mSDUC.nr], index=mSDUC.n*mSDUC.nr)
     OutputResults.to_frame(name='p.u.').reset_index().pivot_table(index=['level_0'], columns='level_1', values='p.u.').rename_axis(['LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(f'{_path}/oUC_Result_GenerationCommitment_{CaseName}.csv', sep=',')
-    OutputResults = pd.Series(data=[mSDUC.vStartUp   [n,nr]() for n,nr in mSDUC.n*mSDUC.nr], index=pd.Index(mSDUC.n*mSDUC.nr))
+    OutputResults = pd.Series(data=[mSDUC.vStartUp   [n,nr]() for n,nr in mSDUC.n*mSDUC.nr], index=mSDUC.n*mSDUC.nr)
     OutputResults.to_frame(name='p.u.').reset_index().pivot_table(index=['level_0'], columns='level_1', values='p.u.').rename_axis(['LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(f'{_path}/oUC_Result_GenerationStartUp_{CaseName}.csv', sep=',')
-    OutputResults = pd.Series(data=[mSDUC.vShutDown  [n,nr]() for n,nr in mSDUC.n*mSDUC.nr], index=pd.Index(mSDUC.n*mSDUC.nr))
+    OutputResults = pd.Series(data=[mSDUC.vShutDown  [n,nr]() for n,nr in mSDUC.n*mSDUC.nr], index=mSDUC.n*mSDUC.nr)
     OutputResults.to_frame(name='p.u.').reset_index().pivot_table(index=['level_0'], columns='level_1', values='p.u.').rename_axis(['LoadLevel'], axis=0).rename_axis([None], axis=1).to_csv(f'{_path}/oUC_Result_GenerationShutDown_{CaseName}.csv', sep=',')
 
     sSCN   = [(sc,n   ) for sc,n    in mSDUC.sc*mSDUC.n          if pScenProb[sc]]
@@ -1268,7 +1268,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
 
     # for sc in mSDUC.sc:
     #     fig, fg = plt.subplots()
-    #     fg.stackplot(range(len(mSDUC.n)),  TechnologyOutput.loc[sc,:,:].values.reshape(len(mSDUC.n),len(mSDUC.gt)).transpose().tolist(), baseline='zero', labels=list(mSDUC.gt))
+    #     fg.stackplot(range(len(mSDUC.n)),  TechnologyOutput.loc[sc,:,:].values.reshape(len(mSDUC.n),len(mSDUC.gt)).transpose().tolist(), baseline='zero', labels=mSDUC.gt)
     #     fg.plot     (range(len(mSDUC.n)), -TechnologyCharge.loc[sc,:,'ESS'], label='ESSCharge', linewidth=0.5, color='b')
     #     fg.plot     (range(len(mSDUC.n)),  pDemand[sc]*1e3,                  label='Demand'   , linewidth=0.5, color='k')
     #     fg.set(xlabel='Hours', ylabel='MW')
