@@ -130,7 +130,7 @@ $$
 \frac{p_{ng}^\omega - dr_{ng}^\omega}{\overline{GP}_g - \underline{GP}_g} \geq 0       \quad \forall \omega ng
 $$ {#eq-min-output-2nd-block}
 
-Total output of a committed unit (all except the VRES units) [p.u.] («`eTotalOutput`»)
+Total output of a committed unit (all except the VRES units) [GW] («`eTotalOutput`»)
 
 $$
 \frac{qp_{ng}^\omega}{\underline{GP}_g} = uc_{ng} + \frac{p_{ng}^\omega}{\underline{GP}_g} \quad \forall \omega ng
