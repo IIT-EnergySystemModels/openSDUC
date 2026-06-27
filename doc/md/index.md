@@ -1,6 +1,4 @@
----
-openSDUC documentation master file, created by Andres Ramos
----
+% openSDUC documentation master file, created by Andres Ramos
 
 # openSDUC Documentation
 
@@ -21,7 +19,7 @@ openSDUC documentation master file, created by Andres Ramos
 The **openSDUC** model has been developed at the [Instituto de Investigación Tecnológica (IIT)](https://www.iit.comillas.edu/index.php.en) of
 the [Universidad Pontificia Comillas](https://www.comillas.edu/en/).
 
-# Index
+## Index
 
 ```{toctree}
 :maxdepth: 2

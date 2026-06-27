@@ -1,6 +1,4 @@
----
-openSDUC documentation master file, created by Andres Ramos
----
+% openSDUC documentation master file, created by Andres Ramos
 
 # Introduction
 
