@@ -142,7 +142,7 @@ Maximum and minimum output of the second block of a committed unit (all except t
 \frac{p_{ng}^\omega - dr_{ng}^\omega}{\overline{GP}_g - \underline{GP}_g} \geq 0       \quad \forall \omega ng
 ```
 
-Total output of a committed unit (all except the VRES units) [GW] («`eTotalOutput`»)
+Total output of a committed unit (all except the VRES units) [p.u.] («`eTotalOutput`»)
 
 ```{math}
 \frac{gp_{ng}^\omega}{\underline{GP}_g} = uc_{ng} + \frac{p_{ng}^\omega}{\underline{GP}_g} \quad \forall \omega ng
