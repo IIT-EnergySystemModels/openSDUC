@@ -31,7 +31,7 @@ This is the list of the input data files and their brief description.
 | `oT_Data_Generation.csv`        | Generation data                                                                                            |
 | `oT_Data_EnergyInflows.csv`     | Energy inflows for ESS (e.g., storage hydro or open-loop pumped-storage hydro) by load level               |
 | `oT_Data_MinimumGeneration.csv` | Variable minimum power generation by load level                                                            |
-| `oT_Data_MaximumGeneration.csv` | Variable minimum power generation by load level                                                            |
+| `oT_Data_MaximumGeneration.csv` | Variable maximum power generation by load level                                                            |
 | `oT_Data_MaximumStorage.csv`    | Variable maximum storage by load level                                                                     |
 | `oT_Data_MinimumStorage.csv`    | Variable minimum storage by load level                                                                     |
 
