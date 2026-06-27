@@ -32,9 +32,9 @@ Here, you have the input files of a small case study of [16 generators](https://
 
 The **openSDUC** code is provided under the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.en.html):
 
-- the code can't become part of a closed-source commercial software product
+- the code cannot become part of a closed-source commercial software product
 - any future changes and improvements to the code remain free and open
 
-Source code can be downloaded from [GitHub](https://github.com/IIT-EnergySystemModels/openSDUC) or installed with [pip](https://pypi.org/project/openSDUC/)
+Source code can be downloaded from [GitHub](https://github.com/IIT-EnergySystemModels/openSDUC) or installed with [pip](https://pypi.org/project/openSDUC/).
 
-This model is a work in progress and will be updated accordingly. If you want to subscribe to the **openSDUC** model updates, send an email to <mailto:andres.ramos@comillas.edu>
+This model is a work in progress and will be updated accordingly. If you want to subscribe to the **openSDUC** model updates, send an email to <mailto:andres.ramos@comillas.edu>.

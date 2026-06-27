@@ -2,7 +2,7 @@
 
 # Output Results
 
-Some figures for technology output, RES curtailment and SRMC are plotted.
+Some figures for technology output, RES curtailment, and SRMC are plotted.
 
 ```{image} /../img/oUC_SRMC_16g.png
 :align: center
@@ -90,9 +90,9 @@ File `oUC_Result_TechnologyGeneration.csv`
 
 File `oUC_Result_TechnologyConsumption.csv`
 
-| Identifier | Identifier | Header     | Description                       |
-| ---------- | ---------- | ---------- | --------------------------------- |
-| Scenario   | Load level | Technology | Consumption (charge in ESS) [GWh] |
+| Identifier | Identifier | Header     | Description                      |
+| ---------- | ---------- | ---------- | -------------------------------- |
+| Scenario   | Load level | Technology | Consumption (charge in ESS) [MW] |
 
 File `oUC_Result_TechnologyGenerationEnergy.csv`
 
@@ -134,4 +134,4 @@ File `oUC_Result_SRMC.csv`
 
 | Identifier | Identifier | Description                     |
 | ---------- | ---------- | ------------------------------- |
-| Scenario   | Load level | Short-Mun Marginal Cost [€/MWh] |
+| Scenario   | Load level | Short-Run Marginal Cost [€/MWh] |

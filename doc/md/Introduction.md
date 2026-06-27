@@ -9,7 +9,7 @@ The **openSDUC** model presents a decision support system for defining the gener
 The model's scope corresponds to one day or one week, divided into load levels: 01-01 00:00:00+01:00 to 01-21 23:00:00+01:00.
 The time division allows a flexible representation of the periods for evaluating the system operation, for example, by 84 periods of two hours or by the 168 hours of the week.
 
-It considers stochastic short-term yearly uncertainties (scenarios) related to the system operation. The operation scenarios are associated with renewable energy sources and electricity demand.
+It considers stochastic short-term uncertainties (scenarios) related to the system operation. The operation scenarios are associated with renewable energy sources and electricity demand.
 
 The model formulates an optimization problem that includes binary and continuous operation decisions.
 
