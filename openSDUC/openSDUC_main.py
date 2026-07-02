@@ -660,7 +660,7 @@
 # For more information on this, and how to apply and follow the GNU AGPL, see
 # <https://www.gnu.org/licenses/>.
 
-# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.34 - January 23, 2026
+# Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.34 - July 02, 2026
 # simplicity and transparency in power systems planning
 
 # Developed by
@@ -680,7 +680,6 @@ import os
 import pandas        as pd
 import time          # count clock time
 import psutil        # access the number of CPUs
-import pyomo.environ as pyo
 from   pyomo.environ import Set, Var, Binary, UnitInterval, NonNegativeReals, Constraint, ConcreteModel, Objective, minimize, Suffix, DataPortal
 from   pyomo.opt     import SolverFactory
 
@@ -734,7 +733,7 @@ def openSDUC_run(DirName, CaseName, SolverName):
     StartTime = time.time()
 
     #%% model declaration
-    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.34 - January 23, 2026')
+    mSDUC = ConcreteModel('Open Stochastic Daily Unit Commitment of Thermal and ESS Units (openSDUC) - Version 1.3.34 - July 02, 2026')
 
     #%% reading the sets
     dictSets = DataPortal()
@@ -914,9 +913,6 @@ def openSDUC_run(DirName, CaseName, SolverName):
     # these parameters are in GWh
     pMinStorage      [pMinStorage       < pEpsilon] = 0.0
     pMaxStorage      [pMaxStorage       < pEpsilon] = 0.0
-
-    # this option avoids a warning in the following assignments
-    pd.options.mode.chained_assignment = None
 
     # minimum up- and downtime converted to an integer number of time steps
     pUpTime = round(pUpTime/pTimeStep).astype('int')
@@ -1110,14 +1106,14 @@ def openSDUC_run(DirName, CaseName, SolverName):
 
     #%%
     def eMinUpTime(mSDUC,n,t):
-        if pScenProb[sc] and pUpTime[t] > 1 and mSDUC.n.ord(n) >= pUpTime[t]:
+        if pUpTime[t] > 1 and mSDUC.n.ord(n) >= pUpTime[t]:
             return sum(mSDUC.vStartUp [n2,t] for n2 in list(mSDUC.n2)[mSDUC.n.ord(n)-pUpTime[t]:mSDUC.n.ord(n)]) <=     mSDUC.vCommitment[n,t]
         else:
             return Constraint.Skip
     mSDUC.eMinUpTime   = Constraint(mSDUC.n*mSDUC.t, rule=eMinUpTime  , doc='minimum up   time [h]')
 
     def eMinDownTime(mSDUC,n,t):
-        if pScenProb[sc] and pDwTime[t] > 1 and mSDUC.n.ord(n) >= pDwTime[t]:
+        if pDwTime[t] > 1 and mSDUC.n.ord(n) >= pDwTime[t]:
             return sum(mSDUC.vShutDown[n2,t] for n2 in list(mSDUC.n2)[mSDUC.n.ord(n)-pDwTime[t]:mSDUC.n.ord(n)]) <= 1 - mSDUC.vCommitment[n,t]
         else:
             return Constraint.Skip

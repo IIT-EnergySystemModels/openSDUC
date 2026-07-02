@@ -124,7 +124,7 @@ VRES units (i.e., those with linear variable cost equal to 0 and no storage capa
 ESS energy inventory (only for load levels that are multiples of 24, 168, or 672 h, depending on the ESS type) [GWh] («`eESSInventory`»)
 
 ```{math}
-i_{n-\tau_e,e}^\omega + \sum_{n' = n+\nu-\tau_e}^n DUR_n (EI_{ne}^\omega - gp_{ne}^\omega + EF_e gc_{ne}^\omega) = i_{ne}^\omega + s_{ne}^\omega \quad \forall \omega ne
+i_{n-\frac{\tau_e}{\nu},e}^\omega + \sum_{n' = n-\frac{\tau_e}{\nu}}^n DUR_n (EI_{ne}^\omega - gp_{ne}^\omega + EF_e gc_{ne}^\omega) = i_{ne}^\omega + s_{ne}^\omega \quad \forall \omega ne
 ```
 
 Maximum and minimum output of the second block of a committed unit (all except the VRES units) [p.u.] («`eMaxOutput2ndBlock`», «`eMinOutput2ndBlock`»)

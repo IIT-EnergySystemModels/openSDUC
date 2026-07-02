@@ -6,7 +6,7 @@ All the input files must be in the same folder as the openSDUC Python file.
 
 ## Dictionaries. Sets
 
-The dictionaries include all the possible elements of the corresponding sets included in the optimization problem.
+The dictionaries include all the possible elements of the corresponding sets in the optimization problem.
 
 | File                     | Description                                                                                                        |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
