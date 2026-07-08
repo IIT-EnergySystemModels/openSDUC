@@ -27,7 +27,7 @@ This is the list of the input data files and their brief description.
 | `oT_Data_Duration.csv`          | Duration of the load levels                                                                                |
 | `oT_Data_Scenario.csv`          | Short-term uncertainties                                                                                   |
 | `oT_Data_Demand.csv`            | Demand                                                                                                     |
-| `oT_Data_OperatingReserve.csv`  | Upward and downward operating reserves (include aFRR, mFRR, and RR for electricity balancing from ENTSO-E) |
+| `oT_Data_OperatingReserve.csv`  | Upward and downward operating reserves (including aFRR, mFRR, and RR for electricity balancing from ENTSO-E) |
 | `oT_Data_Generation.csv`        | Generation data                                                                                            |
 | `oT_Data_EnergyInflows.csv`     | Energy inflows for ESS (e.g., storage hydro or open-loop pumped-storage hydro) by load level               |
 | `oT_Data_MinimumGeneration.csv` | Variable minimum power generation by load level                                                            |
@@ -145,7 +145,7 @@ Internally, all the values below 1e-5 times the maximum system demand will be co
 
 ## Variable maximum and minimum generation
 
-A description of the data included in the file `oT_Data_MaximumGeneration.csv` and `oT_Data_MinimumGeneration.csv` follows:
+A description of the data included in the files `oT_Data_MaximumGeneration.csv` and `oT_Data_MinimumGeneration.csv` follows:
 
 ```{eval-rst}
 ==============  ==========  =========  =============================================================  ==
