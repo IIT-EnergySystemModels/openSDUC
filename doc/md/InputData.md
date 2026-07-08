@@ -46,7 +46,7 @@ A description of the system parameters included in the file `oT_Data_Parameter.c
 | TimeStep | Duration of the time step for the load levels (hourly, bi-hourly, tri-hourly, etc.). | h      |
 
 A time step greater than one hour is a convenient way to reduce the load levels of the time scope. The moving average of the demand, operating reserve, variable generation, and ESS energy inflows over
-the time step load levels is assigned to active load levels (e.g., the mean value of the three hours is associated with the third hour in a trihourly time step).
+the time step load levels is assigned to active load levels (e.g., the mean value of the three hours is associated with the third hour in a tri-hourly time step).
 
 ## Duration
 
@@ -125,7 +125,7 @@ A description of the data included for each generating unit in the file `oT_Data
 | CO2EmissionRate | CO2 emission rate                                                  | tCO2/MWh             |
 
 A generator with linear variable cost > 0 is considered a thermal unit. If its maximum storage is > 0, it is considered an ESS.
-Internally, all the maximum and minimum power values below 1e-5 times the maximum system demand will be converted to 0 by the model.
+Internally, all the maximum and minimum power values below 1e-5 times the maximum system demand will be converted into 0 by the model.
 
 The startup cost of generating units refers to the expenses incurred when bringing a power generation unit online, from an idle state to a point where it can produce electricity.
 
