@@ -4,7 +4,8 @@
 
 Here we present the mathematical formulation of the optimization problem solved by the **openSDUC** model.
 
-- D.A. Tejada-Arango, S. Lumbreras, P. Sánchez-Martín, and A. Ramos "Which Unit-Commitment Formulation is Best? A Systematic Comparison" IEEE Transactions on Power Systems 35 (4): 2926-2936, Jul 2020. [10.1109/TPWRS.2019.2962024](https://doi.org/10.1109/TPWRS.2019.2962024)
+- D.A. Tejada-Arango, S. Lumbreras, P. Sánchez-Martín, and A. Ramos "Which Unit-Commitment Formulation is Best? A Systematic Comparison" IEEE Transactions on
+  Power Systems 35 (4): 2926-2936, Jul 2020. [10.1109/TPWRS.2019.2962024](https://doi.org/10.1109/TPWRS.2019.2962024)
 
 ## Indices
 
@@ -129,10 +130,14 @@ i_{n-\frac{\tau_e}{\nu},e}^\omega + \sum_{n' = n-\frac{\tau_e}{\nu}}^n DUR_n (EI
 
 Maximum and minimum output of the second block of a committed unit (all except the VRES units) [p.u.] («`eMaxOutput2ndBlock`», «`eMinOutput2ndBlock`»)
 
-- D.A. Tejada-Arango, S. Lumbreras, P. Sánchez-Martín, and A. Ramos "Which Unit-Commitment Formulation is Best? A Systematic Comparison" IEEE Transactions on Power Systems 35 (4): 2926-2936, Jul 2020. [10.1109/TPWRS.2019.2962024](https://doi.org/10.1109/TPWRS.2019.2962024)
-- C. Gentile, G. Morales-España, and A. Ramos "A tight MIP formulation of the unit commitment problem with start-up and shut-down constraints" EURO Journal on Computational Optimization 5 (1), 177-201, Mar 2017. [10.1007/s13675-016-0066-y](http://dx.doi.org/10.1007/s13675-016-0066-y)
-- G. Morales-España, A. Ramos, and J. Garcia-Gonzalez "An MIP Formulation for Joint Market-Clearing of Energy and Reserves Based on Ramp Scheduling" IEEE Transactions on Power Systems 29 (1): 476-488, Jan 2014. [10.1109/TPWRS.2013.2259601](http://dx.doi.org/10.1109/TPWRS.2013.2259601)
-- G. Morales-España, J.M. Latorre, and A. Ramos "Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem" IEEE Transactions on Power Systems 28 (4): 4897-4908, Nov 2013. [10.1109/TPWRS.2013.2251373](http://dx.doi.org/10.1109/TPWRS.2013.2251373)
+- D.A. Tejada-Arango, S. Lumbreras, P. Sánchez-Martín, and A. Ramos "Which Unit-Commitment Formulation is Best? A Systematic Comparison" IEEE Transactions on
+  Power Systems 35 (4): 2926-2936, Jul 2020. [10.1109/TPWRS.2019.2962024](https://doi.org/10.1109/TPWRS.2019.2962024)
+- C. Gentile, G. Morales-España, and A. Ramos "A tight MIP formulation of the unit commitment problem with start-up and shut-down constraints" EURO Journal on
+  Computational Optimization 5 (1), 177-201, Mar 2017. [10.1007/s13675-016-0066-y](http://dx.doi.org/10.1007/s13675-016-0066-y)
+- G. Morales-España, A. Ramos, and J. Garcia-Gonzalez "An MIP Formulation for Joint Market-Clearing of Energy and Reserves Based on Ramp Scheduling" IEEE
+  Transactions on Power Systems 29 (1): 476-488, Jan 2014. [10.1109/TPWRS.2013.2259601](http://dx.doi.org/10.1109/TPWRS.2013.2259601)
+- G. Morales-España, J.M. Latorre, and A. Ramos "Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem" IEEE Transactions on Power Systems
+  28 (4): 4897-4908, Nov 2013. [10.1109/TPWRS.2013.2251373](http://dx.doi.org/10.1109/TPWRS.2013.2251373)
 
 ```{math}
 \frac{p_{ng}^\omega + ur_{ng}^\omega}{\overline{GP}_g - \underline{GP}_g} \leq uc_{ng} \quad \forall \omega ng
@@ -154,11 +159,12 @@ Logical relation between commitment, startup, and shutdown status of a committed
 uc_{ng} - uc_{n-\nu,g} = su_{ng} - sd_{ng} \quad \forall ng
 ```
 
-Initial commitment of the units is determined by the model based on the merit order loading, including the VRES and ESS units.
+The initial commitment of the units is determined by the model based on the merit order loading, including the VRES and ESS units.
 
 Maximum ramp up and ramp down for the second block of a thermal unit [p.u.] («`eRampUp`», «`eRampDw`»)
 
-- P. Damcı-Kurt, S. Küçükyavuz, D. Rajan, and A. Atamtürk, “A polyhedral study of production ramping,” Math. Program., vol. 158, no. 1–2, pp. 175–205, Jul. 2016. [10.1007/s10107-015-0919-9](https://doi.org/10.1007/s10107-015-0919-9)
+- P. Damcı-Kurt, S. Küçükyavuz, D. Rajan, and A. Atamtürk, “A polyhedral study of production ramping,” Math. Program., vol. 158, no. 1–2, pp. 175–205, Jul.
+  2016. [10.1007/s10107-015-0919-9](https://doi.org/10.1007/s10107-015-0919-9)
 
 ```{math}
 \frac{p_{nt}^\omega - p_{n-\nu,t}^\omega + ur_{nt}^\omega}{DUR_n RU_t} \leq   uc_{nt}      - su_{nt} \quad \forall \omega nt
@@ -170,7 +176,8 @@ Maximum ramp up and ramp down for the second block of a thermal unit [p.u.] («`
 
 Minimum uptime and downtime of a thermal unit [h] («`eMinUpTime`», «`eMinDownTime`»)
 
-- D. Rajan and S. Takriti, “Minimum up/down polytopes of the unit commitment problem with start-up costs,” IBM, New York, Technical Report RC23628, 2005. <https://pdfs.semanticscholar.org/b886/42e36b414d5929fed48593d0ac46ae3e2070.pdf>
+- D. Rajan and S. Takriti, “Minimum up/down polytopes of the unit commitment problem with start-up costs,” IBM, New York, Technical Report RC23628, 2005.
+  <https://pdfs.semanticscholar.org/b886/42e36b414d5929fed48593d0ac46ae3e2070.pdf>
 
 ```{math}
 \sum_{n'=n+\nu-TU_t}^n su_{n't} \leq     uc_{nt} \quad \forall nt

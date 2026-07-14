@@ -19,34 +19,36 @@ The dictionaries include all the possible elements of the corresponding sets in 
 
 ## Input files
 
-This is the list of the input data files and their brief description.
+This is the list of the input data files with a brief description of each.
 
-| File                            | Description                                                                                                |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `oT_Data_Parameter.csv`         | General system parameters                                                                                  |
-| `oT_Data_Duration.csv`          | Duration of the load levels                                                                                |
-| `oT_Data_Scenario.csv`          | Short-term uncertainties                                                                                   |
-| `oT_Data_Demand.csv`            | Demand                                                                                                     |
+| File                            | Description                                                                                                  |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `oT_Data_Parameter.csv`         | General system parameters                                                                                    |
+| `oT_Data_Duration.csv`          | Duration of the load levels                                                                                  |
+| `oT_Data_Scenario.csv`          | Short-term uncertainties                                                                                     |
+| `oT_Data_Demand.csv`            | Demand                                                                                                       |
 | `oT_Data_OperatingReserve.csv`  | Upward and downward operating reserves (including aFRR, mFRR, and RR for electricity balancing from ENTSO-E) |
-| `oT_Data_Generation.csv`        | Generation data                                                                                            |
-| `oT_Data_EnergyInflows.csv`     | Energy inflows for ESS (e.g., storage hydro or open-loop pumped-storage hydro) by load level               |
-| `oT_Data_MinimumGeneration.csv` | Variable minimum power generation by load level                                                            |
-| `oT_Data_MaximumGeneration.csv` | Variable maximum power generation by load level                                                            |
-| `oT_Data_MaximumStorage.csv`    | Variable maximum storage by load level                                                                     |
-| `oT_Data_MinimumStorage.csv`    | Variable minimum storage by load level                                                                     |
+| `oT_Data_Generation.csv`        | Generation data                                                                                              |
+| `oT_Data_EnergyInflows.csv`     | Energy inflows for ESS (e.g., storage hydro or open-loop pumped-storage hydro) by load level                 |
+| `oT_Data_MinimumGeneration.csv` | Variable minimum power generation by load level                                                              |
+| `oT_Data_MaximumGeneration.csv` | Variable maximum power generation by load level                                                              |
+| `oT_Data_MaximumStorage.csv`    | Variable maximum storage by load level                                                                       |
+| `oT_Data_MinimumStorage.csv`    | Variable minimum storage by load level                                                                       |
 
 ## Parameters
 
 A description of the system parameters included in the file `oT_Data_Parameter.csv` follows:
 
-| File     | Description                                                                          |        |
+| Item     | Description                                                                          |        |
 | -------- | ------------------------------------------------------------------------------------ | ------ |
 | ENSCost  | Cost of energy not served. Cost of load curtailment. Value of Lost Load (VoLL)       | €/MWh  |
 | CO2Cost  | Cost of CO2 emissions                                                                | €/tCO2 |
 | TimeStep | Duration of the time step for the load levels (hourly, bi-hourly, tri-hourly, etc.). | h      |
 
-A time step greater than one hour is a convenient way to reduce the load levels of the time scope. The moving average of the demand, operating reserve, variable generation, and ESS energy inflows over
-the time step load levels is assigned to active load levels (e.g., the mean value of the three hours is associated with the third hour in a tri-hourly time step).
+A time step greater than one hour is a convenient way to reduce the load levels of the time scope. The moving average of the demand, operating reserve, variable
+generation, and ESS energy inflows over
+the time step load levels is assigned to active load levels (e.g., the mean value of the three hours is associated with the third hour in a tri-hourly time
+step).
 
 ## Duration
 
@@ -56,7 +58,8 @@ A description of the data included in the file `oT_Data_Duration.csv` follows:
 | ---------- | -------- | ------------------------------------------------------------------- | --- |
 | Load level | Duration | Duration of the load level. Load levels with duration 0 are ignored | h   |
 
-It is a simple way to use isolated snapshots, representative days, or just the first three months instead of all the hours of a year to simplify the optimization problem.
+It is a simple way to use isolated snapshots, representative days, or just the first three months instead of all the hours of a year to simplify the
+optimization problem.
 
 ## Scenario
 
@@ -93,7 +96,8 @@ Scenario        Load level  Down    Downward operating reserves in the load leve
 ==============  ==========  ======  =============================================  ==
 ```
 
-These operating reserves must include Automatic Frequency Restoration Reserves (aFRR), Manual Frequency Restoration Reserves (mFRR), and Replacement Reserves (RR) for electricity balancing from ENTSO-E.
+These operating reserves must include Automatic Frequency Restoration Reserves (aFRR), Manual Frequency Restoration Reserves (mFRR), and Replacement Reserves
+(RR) for electricity balancing from ENTSO-E.
 Internally, all the values below 1e-5 times the maximum system demand will be converted into 0 by the model.
 
 ## Generation
@@ -127,7 +131,8 @@ A description of the data included for each generating unit in the file `oT_Data
 A generator with linear variable cost > 0 is considered a thermal unit. If its maximum storage is > 0, it is considered an ESS.
 Internally, all the maximum and minimum power values below 1e-5 times the maximum system demand will be converted into 0 by the model.
 
-The startup cost of generating units refers to the expenses incurred when bringing a power generation unit online, from an idle state to a point where it can produce electricity.
+The startup cost of generating units refers to the expenses incurred when bringing a power generation unit online, from an idle state to a point where it can
+produce electricity.
 
 ## Energy inflows
 
@@ -155,8 +160,9 @@ Scenario        Load level  Generator  Maximum (minimum) power generation of the
 ==============  ==========  =========  =============================================================  ==
 ```
 
-To force a generator to produce 0, a small value (e.g., 0.1 MW) strictly > 0, but not 0 (in which case the value will be ignored), must be introduced. Internally, all the values below 1e-5 times the maximum system demand will be converted into 0 by the model.
-Columns of this file (names of the generators) must be in the same order as in the generation dictionary.
+To force a generator to produce 0, a small value (e.g., 0.1 MW) strictly > 0, but not 0 (in which case the value will be ignored), must be entered. Internally,
+all the values below 1e-5 times the maximum system demand will be converted into 0 by the model.
+The columns of this file (names of the generators) must be in the same order as in the generation dictionary.
 
 ## Variable maximum and minimum storage
 
