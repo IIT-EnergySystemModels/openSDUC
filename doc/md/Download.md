@@ -2,7 +2,7 @@
 
 # Download & Installation
 
-The **openSDUC** model has been tested using the latest versions of [Python 3.13.7](https://www.python.org/) and [Pyomo
+The **openSDUC** model has been tested using the latest versions of [Python 3.14.6](https://www.python.org/) and [Pyomo
 6.10.1](https://pyomo.readthedocs.io/en/stable/), and it uses [Gurobi 13.0.2](https://www.gurobi.com/products/gurobi-optimizer/) as a commercial MIP solver, for
 which a free academic license is available.
 It uses Pyomo so that it is independent of the preferred solver. Alternatively, you can use one of the free solvers [HiGHS
