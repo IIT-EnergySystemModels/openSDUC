@@ -50,15 +50,14 @@ have an existing Python (version 3.11) installation, you can also download the r
 2. **Packages and Solver**:
 
    1. Launch a new command prompt (Windows: Win+R, type "cmd", Enter)
-   2. [HiGHS](https://ergo-code.github.io/HiGHS/dev/installation/#Precompiled-Binaries) is our recommendation if you want a free and open-source solver.
+   2. [HiGHS](https://pypi.org/project/highspy/) is our recommendation if you want a free and open-source solver.
    3. Install openSDUC via pip by running `pip install openSDUC`
 
 # Solvers
 
 ## HiGHS
 
-The [HiGHS solver](https://ergo-code.github.io/HiGHS/dev/interfaces/python/#python-getting-started) can also be used. It can be installed using: `pip install
-highspy`.
+The [HiGHS solver](https://pypi.org/project/highspy/) can also be used. It must be installed using both methods: `pip install highspy` and `pip install highspy-extras`.
 This solver is activated by calling the openSDUC model with the solver name 'appsi_highs'.
 
 ## Gurobi
